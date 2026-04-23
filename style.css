@@ -1,0 +1,94 @@
+
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: linear-gradient(to bottom, #062f1f, #0f5132);
+  color: white;
+  text-align: center;
+}
+
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 20px;
+  background: rgba(0,0,0,0.3);
+}
+
+.nav-right a {
+  margin-left: 12px;
+  text-decoration: none;
+  color: white;
+  padding: 6px 12px;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.chat-btn { background: #1faa59; }
+.pin-btn { background: #1b1b1b; }
+.view-btn { background: #ff9800; }
+
+.hero {
+  margin-top: 70px;
+  padding: 0 20px;
+}
+
+.hero h1 {
+  font-size: 42px;
+  margin-bottom: 10px;
+}
+
+.hero p {
+  font-size: 16px;
+  opacity: 0.9;
+}
+
+.main-buttons {
+  margin-top: 25px;
+}
+
+.btn {
+  background: #1faa59;
+  padding: 10px 20px;
+  margin: 5px;
+  color: white;
+  text-decoration: none;
+  border-radius: 5px;
+  display: inline-block;
+}
+
+.admin-btn {
+  display: inline-block;
+  margin-top: 15px;
+  background: #ff9800;
+  padding: 8px 16px;
+  border-radius: 5px;
+  color: white;
+  text-decoration: none;
+}
+
+.social-section {
+  margin-top: 80px;
+  padding: 40px 20px;
+  background: rgba(0,0,0,0.25);
+}
+
+.telegram-btn {
+  display: inline-block;
+  background: #0088cc;
+  padding: 12px 22px;
+  border-radius: 6px;
+  color: white;
+  text-decoration: none;
+  margin-top: 10px;
+}
+
+.whatsapp-btn {
+  display: inline-block;
+  background: #25D366;
+  padding: 12px 22px;
+  border-radius: 6px;
+  color: white;
+  text-decoration: none;
+  margin-top: 10px;
+}
