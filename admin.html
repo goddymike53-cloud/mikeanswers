@@ -1,1 +1,71 @@
-<h2 style='text-align:center;margin-top:120px;'>Admin Page (Firebase will be connected next)</h2>
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Admin Panel - Mike Answers</title>
+</head>
+<body style="font-family:Arial; padding:20px;">
+
+<h2>Admin Login</h2>
+<input type="email" id="email" placeholder="Admin Email"><br><br>
+<input type="password" id="password" placeholder="Password"><br><br>
+<button onclick="loginAdmin()">Login</button>
+
+<hr><br>
+
+<h2>Upload Answer</h2>
+<input type="text" id="subject" placeholder="Subject"><br><br>
+<input type="text" id="pin" placeholder="PIN"><br><br>
+<textarea id="content" placeholder="Answer content"></textarea><br><br>
+<button onclick="uploadAnswer()">Upload</button>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+import { getFirestore, addDoc, collection } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyAzSw3J9ijVn-1xwGkKh8ZXe77i44QsVmE",
+  authDomain: "mikeanswers-1ba00.firebaseapp.com",
+  projectId: "mikeanswers-1ba00",
+  storageBucket: "mikeanswers-1ba00.firebasestorage.app",
+  messagingSenderId: "999853103064",
+  appId: "1:999853103064:web:b74a41daf8205a52d244ad"
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+
+window.loginAdmin = async function () {
+  const email = document.getElementById("email").value;
+  const password = document.getElementById("password").value;
+
+  try {
+    await signInWithEmailAndPassword(auth, email, password);
+    alert("Admin logged in!");
+  } catch (error) {
+    alert(error.message);
+  }
+}
+
+window.uploadAnswer = async function () {
+  const subject = document.getElementById("subject").value;
+  const content = document.getElementById("content").value;
+  const pin = document.getElementById("pin").value;
+
+  try {
+    await addDoc(collection(db, "waec2026"), {
+      subject: subject,
+      content: content,
+      pin: pin
+    });
+
+    alert("Answer uploaded successfully!");
+  } catch (error) {
+    alert(error.message);
+  }
+}
+</script>
+
+</body>
+</html>
