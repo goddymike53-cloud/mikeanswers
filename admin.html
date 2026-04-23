@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Admin Login - MikeAnswers</title>
+  <title>Admin Dashboard - MikeAnswers</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <style>
     body {
       margin: 0;
-      font-family: 'Segoe UI', sans-serif;
-      background: linear-gradient(135deg, #002e17, #005c2e);
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #064e1a, #0f7a2f);
       display: flex;
       justify-content: center;
       align-items: center;
@@ -17,84 +17,77 @@
 
     .card {
       background: rgba(255,255,255,0.08);
-      backdrop-filter: blur(15px);
+      backdrop-filter: blur(12px);
+      padding: 30px;
       border-radius: 20px;
-      padding: 40px;
-      width: 95%;
-      max-width: 500px;
+      width: 90%;
+      max-width: 400px;
       text-align: center;
-      box-shadow: 0 0 30px rgba(0,255,128,0.4);
-      animation: fadeUp 0.8s ease;
-    }
-
-    @keyframes fadeUp {
-      from { opacity:0; transform:translateY(30px); }
-      to { opacity:1; transform:translateY(0); }
+      box-shadow: 0 0 25px rgba(0,0,0,0.4);
+      color: white;
     }
 
     h2 {
-      color: white;
       margin-bottom: 10px;
     }
 
     .badge {
-      display:inline-block;
       background: gold;
-      padding:6px 15px;
-      border-radius:50px;
-      font-size:12px;
-      font-weight:bold;
-      margin-bottom:25px;
-      box-shadow:0 0 12px gold;
+      color: black;
+      padding: 8px 15px;
+      border-radius: 50px;
+      font-weight: bold;
+      display: inline-block;
+      margin-bottom: 20px;
+      box-shadow: 0 0 15px gold;
     }
 
-    input, textarea, select {
-      width:100%;
-      padding:12px;
-      border-radius:10px;
-      border:none;
-      margin-bottom:15px;
-      font-size:14px;
+    input, select, textarea {
+      width: 100%;
+      padding: 12px;
+      margin: 10px 0;
+      border-radius: 10px;
+      border: none;
+      outline: none;
+      font-size: 14px;
     }
 
     textarea {
-      resize:none;
-      height:100px;
+      height: 100px;
+      resize: none;
     }
 
     button {
-      width:100%;
-      padding:12px;
-      border-radius:10px;
-      border:none;
-      font-size:15px;
-      font-weight:bold;
-      background:linear-gradient(45deg,#ffb300,#ffcc00);
-      cursor:pointer;
-      transition:0.3s;
-      box-shadow:0 0 15px rgba(255,204,0,0.6);
-      margin-top:5px;
+      width: 100%;
+      padding: 14px;
+      border-radius: 12px;
+      border: none;
+      background: linear-gradient(45deg, gold, orange);
+      font-weight: bold;
+      font-size: 15px;
+      cursor: pointer;
+      margin-top: 10px;
+      box-shadow: 0 0 15px rgba(255,215,0,0.7);
+      transition: 0.3s;
     }
 
     button:hover {
-      transform:scale(1.05);
+      transform: scale(1.05);
     }
 
     .logout {
-      background:#111;
-      color:white;
-      margin-top:10px;
-      box-shadow:none;
+      background: #111;
+      color: white;
+      box-shadow: none;
     }
 
-    #status {
-      margin-top:15px;
-      color:white;
-      font-weight:bold;
+    #status, #loginStatus {
+      margin-top: 10px;
+      font-weight: bold;
     }
 
     .hidden {
-      display:none;
+      display: none;
     }
   </style>
 </head>
@@ -108,10 +101,8 @@
 
     <input type="password" id="adminPassword" placeholder="Enter Admin Password">
     <button onclick="login()">Login</button>
-
     <h3 id="loginStatus"></h3>
   </div>
-
 
   <!-- DASHBOARD SECTION -->
   <div class="card hidden" id="dashboardSection">
@@ -134,19 +125,79 @@
     <h3 id="status"></h3>
   </div>
 
-
 <script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-  import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
-  const firebaseConfig = {
-    apiKey: "AIzaSyAzSw3J9ijVn-1xwGkKh8ZXe77i44QsVmE",
-    authDomain: "mikeanswers-1ba00.firebaseapp.com",
-    projectId: "mikeanswers-1ba00",
-    storageBucket: "mikeanswers-1ba00.firebasestorage.app",
-    messagingSenderId: "999853103064",
-    appId: "1:999853103064:web:b74a41daf8205a52d244ad"
-  };
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "YOUR_API_KEY",
+  authDomain: "YOUR_PROJECT.firebaseapp.com",
+  projectId: "YOUR_PROJECT_ID",
+  storageBucket: "YOUR_PROJECT.appspot.com",
+  messagingSenderId: "YOUR_ID",
+  appId: "YOUR_APP_ID"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+const ADMIN_PASSWORD = "12345"; // CHANGE THIS
+
+// LOGIN FUNCTION
+window.login = function() {
+  const password = document.getElementById("adminPassword").value;
+
+  if (password === ADMIN_PASSWORD) {
+    document.getElementById("loginSection").classList.add("hidden");
+    document.getElementById("dashboardSection").classList.remove("hidden");
+  } else {
+    document.getElementById("loginStatus").innerText = "Wrong Password ❌";
+  }
+};
+
+// LOGOUT
+window.logout = function() {
+  document.getElementById("dashboardSection").classList.add("hidden");
+  document.getElementById("loginSection").classList.remove("hidden");
+};
+
+// UPLOAD ANSWER
+window.uploadAnswer = async function () {
+
+  const collectionName = document.getElementById("collectionName").value;
+  const subject = document.getElementById("subject").value;
+  const pin = document.getElementById("pin").value;
+  const content = document.getElementById("content").value;
+
+  if (!subject || !pin || !content) {
+    document.getElementById("status").innerText = "Fill all fields!";
+    return;
+  }
+
+  try {
+    await addDoc(collection(db, collectionName), {
+      subject: subject,
+      pin: pin,
+      content: content,
+      createdAt: new Date()
+    });
+
+    document.getElementById("status").innerText = "Answer Uploaded Successfully ✅";
+
+    document.getElementById("subject").value = "";
+    document.getElementById("pin").value = "";
+    document.getElementById("content").value = "";
+
+  } catch (error) {
+    document.getElementById("status").innerText = error.message;
+  }
+};
+
+</script>
+
+</body>
+</html>  };
 
   const app = initializeApp(firebaseConfig);
   const db = getFirestore(app);
