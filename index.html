@@ -2,80 +2,141 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <meta charset="UTF-8">
+  <title>MikeAnswers - Verified Examination Solutions</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Mikeanswers</title>
-  <link rel="stylesheet" href="style.css">
+
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(135deg, #003d1f, #006633);
+      color: white;
+      text-align: center;
+    }
+
+    /* Glass container */
+    .container {
+      margin: 80px auto;
+      padding: 40px;
+      width: 90%;
+      max-width: 500px;
+      background: rgba(255,255,255,0.08);
+      backdrop-filter: blur(10px);
+      border-radius: 20px;
+      box-shadow: 0 0 25px rgba(0,0,0,0.4);
+      animation: float 3s ease-in-out infinite;
+    }
+
+    @keyframes float {
+      0% { transform: translateY(0px); }
+      50% { transform: translateY(-8px); }
+      100% { transform: translateY(0px); }
+    }
+
+    h1 {
+      font-size: 32px;
+      margin-bottom: 10px;
+      letter-spacing: 1px;
+    }
+
+    .verified {
+      display: inline-block;
+      background: linear-gradient(45deg, gold, orange);
+      color: black;
+      padding: 6px 15px;
+      border-radius: 20px;
+      font-size: 13px;
+      font-weight: bold;
+      margin-bottom: 20px;
+      box-shadow: 0 0 15px gold;
+    }
+
+    p {
+      font-size: 15px;
+      opacity: 0.9;
+      margin-bottom: 30px;
+    }
+
+    .btn {
+      display: block;
+      margin: 12px auto;
+      padding: 14px;
+      width: 85%;
+      border-radius: 12px;
+      border: none;
+      font-size: 15px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-decoration: none;
+      color: white;
+    }
+
+    .btn-primary {
+      background: linear-gradient(45deg, #00c853, #00e676);
+      box-shadow: 0 0 15px rgba(0,255,100,0.6);
+    }
+
+    .btn-primary:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 25px rgba(0,255,100,0.9);
+    }
+
+    .btn-gold {
+      background: linear-gradient(45deg, gold, orange);
+      color: black;
+      box-shadow: 0 0 15px gold;
+    }
+
+    .btn-gold:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 25px gold;
+    }
+
+    .btn-blue {
+      background: linear-gradient(45deg, #2196f3, #00b0ff);
+      box-shadow: 0 0 15px #2196f3;
+    }
+
+    .btn-blue:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 25px #00b0ff;
+    }
+
+    footer {
+      margin-top: 40px;
+      font-size: 13px;
+      opacity: 0.7;
+    }
+
+  </style>
 </head>
+
 <body>
 
-  <div class="navbar">
-    <div class="nav-left">🏠</div>
-    <div class="nav-right">
-      <a href="https://wa.me/2349161508767" target="_blank" class="chat-btn">Chat</a>
-      <a href="pin.html" class="pin-btn">PIN</a>
-      <a href="answers.html" class="view-btn">VIEW ANSWER</a>
-    </div>
+  <div class="container">
+    <h1>MikeAnswers</h1>
+
+    <div class="verified">✔ VERIFIED & SECURED</div>
+
+    <p>
+      Premium WAEC, NECO & JAMB Examination Solutions Portal.<br>
+      Fast | Accurate | Trusted
+    </p>
+
+    <a href="pin.html" class="btn btn-primary">Enter PIN</a>
+
+    <a href="admin.html" class="btn btn-gold">Admin Login</a>
+
+    <a href="https://t.me/mikerunz" class="btn btn-blue">Join Telegram</a>
+
+    <a href="https://wa.me/2349161508767" class="btn btn-primary">Chat on WhatsApp</a>
+
+    <footer>
+      © 2026 MikeAnswers | All Rights Reserved
+    </footer>
+
   </div>
 
-  <div class="hero">
-    <h1>Mikeanswers</h1>
-    <p>Your Reliable Source for Verified WAEC, NECO & JAMB Examination Answers</p>
-
-    <div class="main-buttons">
-      <a href="index.html" class="btn">Home</a>
-      <a href="pin.html" class="btn">Enter Pin</a>
-    </div>
-
-    <a href="admin.html" class="admin-btn">Admin Login</a>
-  </div>
-
-  <div class="social-section">
-    <h2>Join Our Telegram Channel</h2>
-    <a href="https://t.me/mikerunz" target="_blank" class="telegram-btn">Join Telegram</a>
-
-    <h2 style="margin-top:40px;">Chat Us on WhatsApp</h2>
-    <a href="https://wa.me/2349161508767" target="_blank" class="whatsapp-btn">Chat on WhatsApp</a>
-  </div>
-
-</body> <!-- Firebase SDK -->
-<script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-  import { getFirestore, collection, addDoc, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-
-  const firebaseConfig = {
-    apiKey: "AIzaSyAzSw3J9ijVn-1xwGkKh8ZXe77i44QsVmE",
-    authDomain: "mikeanswers-1ba00.firebaseapp.com",
-    projectId: "mikeanswers-1ba00",
-    storageBucket: "mikeanswers-1ba00.firebasestorage.app",
-    messagingSenderId: "999853103064",
-    appId: "1:999853103064:web:b74a41daf8205a52d244ad"
-  };
-
-  // Initialize Firebase
-  const app = initializeApp(firebaseConfig);
-  const db = getFirestore(app);
-
-  // Example: Save Answer
-  async function saveAnswer(pin, answer) {
-    await addDoc(collection(db, "answers"), {
-      pin: pin,
-      answer: answer,
-      createdAt: new Date()
-    });
-    alert("Answer Saved Successfully!");
-  }
-
-  // Example: Get Answers
-  async function getAnswers() {
-    const querySnapshot = await getDocs(collection(db, "answers"));
-    querySnapshot.forEach((doc) => {
-      console.log(doc.data());
-    });
-  }
-
-  // Make functions global
-  window.saveAnswer = saveAnswer;
-  window.getAnswers = getAnswers;
-</script>
+</body>
 </html>
