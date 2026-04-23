@@ -131,13 +131,73 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/fireba
 import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
 const firebaseConfig = {
-  apiKey: "YOUR_API_KEY",
-  authDomain: "YOUR_PROJECT.firebaseapp.com",
-  projectId: "YOUR_PROJECT_ID",
-  storageBucket: "YOUR_PROJECT.appspot.com",
-  messagingSenderId: "YOUR_ID",
-  appId: "YOUR_APP_ID"
+  apiKey: "AIzaSyAzSw3J9ijVn-1xwGKkh8ZXe77i44QsVmE",
+  authDomain: "mikeanswers-1ba00.firebaseapp.com",
+  projectId: "mikeanswers-1ba00",
+  storageBucket: "mikeanswers-1ba00.appspot.com",
+  messagingSenderId: "999853103064",
+  appId: "1:999853103064:web:b74a41daf8205a52d244ad"
 };
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+const ADMIN_PASSWORD = "12345"; // CHANGE THIS TO YOUR OWN PASSWORD
+
+// LOGIN
+window.login = function() {
+  const password = document.getElementById("adminPassword").value;
+
+  if (password === ADMIN_PASSWORD) {
+    document.getElementById("loginSection").classList.add("hidden");
+    document.getElementById("dashboardSection").classList.remove("hidden");
+  } else {
+    document.getElementById("loginStatus").innerText = "Wrong Password ❌";
+  }
+};
+
+// LOGOUT
+window.logout = function() {
+  document.getElementById("dashboardSection").classList.add("hidden");
+  document.getElementById("loginSection").classList.remove("hidden");
+};
+
+// UPLOAD ANSWER
+window.uploadAnswer = async function () {
+
+  const collectionName = document.getElementById("collectionName").value;
+  const subject = document.getElementById("subject").value;
+  const pin = document.getElementById("pin").value;
+  const content = document.getElementById("content").value;
+
+  if (!subject || !pin || !content) {
+    document.getElementById("status").innerText = "Fill all fields!";
+    return;
+  }
+
+  try {
+    await addDoc(collection(db, collectionName), {
+      subject: subject,
+      pin: pin,
+      content: content,
+      createdAt: new Date()
+    });
+
+    document.getElementById("status").innerText = "Answer Uploaded Successfully ✅";
+
+    document.getElementById("subject").value = "";
+    document.getElementById("pin").value = "";
+    document.getElementById("content").value = "";
+
+  } catch (error) {
+    document.getElementById("status").innerText = error.message;
+  }
+};
+
+</script>
+
+</body>
+</html>};
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
