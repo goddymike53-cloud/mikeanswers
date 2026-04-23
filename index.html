@@ -38,5 +38,44 @@
     <a href="https://wa.me/2349161508767" target="_blank" class="whatsapp-btn">Chat on WhatsApp</a>
   </div>
 
-</body>
+</body> <!-- Firebase SDK -->
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+  import { getFirestore, collection, addDoc, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyAzSw3J9ijVn-1xwGkKh8ZXe77i44QsVmE",
+    authDomain: "mikeanswers-1ba00.firebaseapp.com",
+    projectId: "mikeanswers-1ba00",
+    storageBucket: "mikeanswers-1ba00.firebasestorage.app",
+    messagingSenderId: "999853103064",
+    appId: "1:999853103064:web:b74a41daf8205a52d244ad"
+  };
+
+  // Initialize Firebase
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+
+  // Example: Save Answer
+  async function saveAnswer(pin, answer) {
+    await addDoc(collection(db, "answers"), {
+      pin: pin,
+      answer: answer,
+      createdAt: new Date()
+    });
+    alert("Answer Saved Successfully!");
+  }
+
+  // Example: Get Answers
+  async function getAnswers() {
+    const querySnapshot = await getDocs(collection(db, "answers"));
+    querySnapshot.forEach((doc) => {
+      console.log(doc.data());
+    });
+  }
+
+  // Make functions global
+  window.saveAnswer = saveAnswer;
+  window.getAnswers = getAnswers;
+</script>
 </html>
