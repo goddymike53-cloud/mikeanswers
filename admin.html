@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Admin Dashboard - MikeAnswers</title>
+  <title>Admin Login - MikeAnswers</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <style>
@@ -15,21 +15,21 @@
       height: 100vh;
     }
 
-    .admin-container {
-      background: rgba(255, 255, 255, 0.08);
+    .card {
+      background: rgba(255,255,255,0.08);
       backdrop-filter: blur(15px);
       border-radius: 20px;
       padding: 40px;
       width: 95%;
       max-width: 500px;
       text-align: center;
-      box-shadow: 0 0 30px rgba(0, 255, 128, 0.4);
-      animation: slideUp 0.8s ease;
+      box-shadow: 0 0 30px rgba(0,255,128,0.4);
+      animation: fadeUp 0.8s ease;
     }
 
-    @keyframes slideUp {
-      from { opacity: 0; transform: translateY(30px); }
-      to { opacity: 1; transform: translateY(0); }
+    @keyframes fadeUp {
+      from { opacity:0; transform:translateY(30px); }
+      to { opacity:1; transform:translateY(0); }
     }
 
     h2 {
@@ -38,59 +38,83 @@
     }
 
     .badge {
-      display: inline-block;
+      display:inline-block;
       background: gold;
-      color: black;
-      padding: 6px 15px;
-      border-radius: 50px;
-      font-size: 12px;
-      font-weight: bold;
-      margin-bottom: 25px;
-      box-shadow: 0 0 12px gold;
+      padding:6px 15px;
+      border-radius:50px;
+      font-size:12px;
+      font-weight:bold;
+      margin-bottom:25px;
+      box-shadow:0 0 12px gold;
     }
 
     input, textarea, select {
-      width: 100%;
-      padding: 12px;
-      border-radius: 10px;
-      border: none;
-      margin-bottom: 15px;
-      font-size: 14px;
+      width:100%;
+      padding:12px;
+      border-radius:10px;
+      border:none;
+      margin-bottom:15px;
+      font-size:14px;
     }
 
     textarea {
-      resize: none;
-      height: 100px;
+      resize:none;
+      height:100px;
     }
 
     button {
-      width: 100%;
-      padding: 12px;
-      border-radius: 10px;
-      border: none;
-      font-size: 15px;
-      font-weight: bold;
-      background: linear-gradient(45deg, #ffb300, #ffcc00);
-      cursor: pointer;
-      transition: 0.3s;
-      box-shadow: 0 0 15px rgba(255, 204, 0, 0.6);
+      width:100%;
+      padding:12px;
+      border-radius:10px;
+      border:none;
+      font-size:15px;
+      font-weight:bold;
+      background:linear-gradient(45deg,#ffb300,#ffcc00);
+      cursor:pointer;
+      transition:0.3s;
+      box-shadow:0 0 15px rgba(255,204,0,0.6);
+      margin-top:5px;
     }
 
     button:hover {
-      transform: scale(1.05);
+      transform:scale(1.05);
+    }
+
+    .logout {
+      background:#111;
+      color:white;
+      margin-top:10px;
+      box-shadow:none;
     }
 
     #status {
-      margin-top: 15px;
-      color: white;
-      font-weight: bold;
+      margin-top:15px;
+      color:white;
+      font-weight:bold;
+    }
+
+    .hidden {
+      display:none;
     }
   </style>
 </head>
 
 <body>
 
-  <div class="admin-container">
+  <!-- LOGIN SECTION -->
+  <div class="card" id="loginSection">
+    <h2>Admin Login</h2>
+    <div class="badge">✔ VERIFIED ADMIN</div>
+
+    <input type="password" id="adminPassword" placeholder="Enter Admin Password">
+    <button onclick="login()">Login</button>
+
+    <h3 id="loginStatus"></h3>
+  </div>
+
+
+  <!-- DASHBOARD SECTION -->
+  <div class="card hidden" id="dashboardSection">
     <h2>Admin Dashboard</h2>
     <div class="badge">✔ VERIFIED ADMIN</div>
 
@@ -100,55 +124,81 @@
       <option value="jamb2026">JAMB 2026</option>
     </select>
 
-    <input type="text" id="subject" placeholder="Enter Subject (e.g. Mathematics)">
+    <input type="text" id="subject" placeholder="Enter Subject">
     <input type="text" id="pin" placeholder="Set Access PIN">
     <textarea id="content" placeholder="Paste Answer Here..."></textarea>
 
     <button onclick="uploadAnswer()">Upload Answer</button>
+    <button class="logout" onclick="logout()">Logout</button>
 
     <h3 id="status"></h3>
   </div>
 
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-    import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
-    const firebaseConfig = {
-      apiKey: "AIzaSyAzSw3J9ijVn-1xwGkKh8ZXe77i44QsVmE",
-      authDomain: "mikeanswers-1ba00.firebaseapp.com",
-      projectId: "mikeanswers-1ba00",
-      storageBucket: "mikeanswers-1ba00.firebasestorage.app",
-      messagingSenderId: "999853103064",
-      appId: "1:999853103064:web:b74a41daf8205a52d244ad"
-    };
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+  import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
-    const app = initializeApp(firebaseConfig);
-    const db = getFirestore(app);
+  const firebaseConfig = {
+    apiKey: "AIzaSyAzSw3J9ijVn-1xwGkKh8ZXe77i44QsVmE",
+    authDomain: "mikeanswers-1ba00.firebaseapp.com",
+    projectId: "mikeanswers-1ba00",
+    storageBucket: "mikeanswers-1ba00.firebasestorage.app",
+    messagingSenderId: "999853103064",
+    appId: "1:999853103064:web:b74a41daf8205a52d244ad"
+  };
 
-    window.uploadAnswer = async function () {
-      const collectionName = document.getElementById("collectionName").value;
-      const subject = document.getElementById("subject").value;
-      const pin = document.getElementById("pin").value;
-      const content = document.getElementById("content").value;
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
 
-      if (!subject || !pin || !content) {
-        document.getElementById("status").innerText = "Please fill all fields ❌";
-        return;
-      }
+  // 🔐 CHANGE THIS PASSWORD
+  const ADMIN_PASSWORD = "mike2026";
 
-      await addDoc(collection(db, collectionName), {
-        subject: subject,
-        pin: pin,
-        content: content,
-        createdAt: new Date()
-      });
+  window.login = function() {
+    const entered = document.getElementById("adminPassword").value;
 
-      document.getElementById("status").innerText = "Answer Uploaded Successfully ✅";
-
-      document.getElementById("subject").value = "";
-      document.getElementById("pin").value = "";
-      document.getElementById("content").value = "";
+    if (entered === ADMIN_PASSWORD) {
+      document.getElementById("loginSection").classList.add("hidden");
+      document.getElementById("dashboardSection").classList.remove("hidden");
+    } else {
+      document.getElementById("loginStatus").innerText = "Wrong Password ❌";
     }
+  }
+
+  window.logout = function() {
+    document.getElementById("dashboardSection").classList.add("hidden");
+    document.getElementById("loginSection").classList.remove("hidden");
+    document.getElementById("adminPassword").value = "";
+  }
+
+  window.uploadAnswer = async function () {
+    const collectionName = document.getElementById("collectionName").value;
+    const subject = document.getElementById("subject").value;
+    const pin = document.getElementById("pin").value;
+    const content = document.getElementById("content").value;
+
+    if (!subject || !pin || !content) {
+      document.getElementById("status").innerText = "Please fill all fields ❌";
+      return;
+    }
+
+    await addDoc(collection(db, collectionName), {
+      subject,
+      pin,
+      content,
+      createdAt: new Date()
+    });
+
+    document.getElementById("status").innerText = "Answer Uploaded Successfully ✅";
+
+    document.getElementById("subject").value = "";
+    document.getElementById("pin").value = "";
+    document.getElementById("content").value = "";
+  }
+</script>
+
+</body>
+</html>    }
   </script>
 
 </body>
