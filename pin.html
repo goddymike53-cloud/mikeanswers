@@ -1,1 +1,52 @@
-<h2 style='text-align:center;margin-top:120px;'>PIN Page (Logic will be connected next)</h2>
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Enter PIN - Mike Answers</title>
+</head>
+<body style="font-family: Arial; padding:20px;">
+
+<h2>Enter PIN to View Answer</h2>
+
+<input type="text" id="userPin" placeholder="Enter PIN"><br><br>
+<button onclick="checkPin()">Check Answer</button>
+
+<h3 id="result" style="margin-top:20px;"></h3>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyAzSw3J9ijVn-1xwGkKh8ZXe77i44QsVmE",
+  authDomain: "mikeanswers-1ba00.firebaseapp.com",
+  projectId: "mikeanswers-1ba00",
+  storageBucket: "mikeanswers-1ba00.firebasestorage.app",
+  messagingSenderId: "999853103064",
+  appId: "1:999853103064:web:b74a41daf8205a52d244ad"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+window.checkPin = async function() {
+  const enteredPin = document.getElementById("userPin").value;
+  const querySnapshot = await getDocs(collection(db, "waec2026"));
+
+  let found = false;
+
+  querySnapshot.forEach((doc) => {
+    const data = doc.data();
+    if (data.pin === enteredPin) {
+      document.getElementById("result").innerText = data.content;
+      found = true;
+    }
+  });
+
+  if (!found) {
+    document.getElementById("result").innerText = "Invalid PIN";
+  }
+}
+</script>
+
+</body>
+</html>
