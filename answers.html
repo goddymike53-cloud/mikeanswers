@@ -33,26 +33,25 @@ body{
 <div class="answer-box" id="answerBox">
 Checking PIN...
 </div>
-
 <script>
-const savedPin = localStorage.getItem("accessPin");
 
-// 🔐 ADMIN MULTIPLE PINS HERE
-const pins = {
-  "MATH2026": "📘 WAEC Mathematics Answers:<br><br>1. A<br>2. C<br>3. B<br>4. D",
+const enteredPin = localStorage.getItem("accessPin");
+const subject = "waec2026"; // change for other pages
+const savedPin = localStorage.getItem(subject + "_pin");
 
-  "ENG2026": "📗 WAEC English Answers:<br><br>1. B<br>2. D<br>3. A<br>4. C",
+const answerBox = document.getElementById("answerBox");
 
-  "BIO2026": "🧬 WAEC Biology Answers:<br><br>1. D<br>2. A<br>3. C<br>4. B"
-};
-
-if(pins[savedPin]){
-   document.getElementById("answerBox").innerHTML = pins[savedPin];
-}else{
-   document.getElementById("answerBox").innerHTML =
-   "❌ Invalid or Expired PIN";
+if(!enteredPin){
+    answerBox.innerHTML = "❌ No PIN Entered";
 }
+else if(enteredPin !== savedPin){
+    answerBox.innerHTML = "❌ Invalid or Expired PIN";
+}
+else{
+    answerBox.innerHTML = "✅ Correct PIN<br><br>YOUR ANSWERS WILL SHOW HERE";
+}
+
 </script>
 
 </body>
-</html>
+</html
