@@ -181,6 +181,33 @@ window.uploadAnswer = async function() {
 
 };
 
+<script>
+
+function login(){
+    const email = document.getElementById("adminEmail").value;
+    const password = document.getElementById("adminPassword").value;
+
+    if(email === "admin@gmail.com" && password === "12345"){
+        document.getElementById("loginSection").style.display = "none";
+        document.getElementById("dashboardSection").classList.remove("hidden");
+    } else {
+        document.getElementById("loginStatus").innerText = "Invalid login details";
+    }
+}
+
+function savePin(){
+    const subject = document.getElementById("collectionName").value;
+    const pin = document.getElementById("newPin").value;
+
+    if(pin === ""){
+        alert("Enter a PIN");
+        return;
+    }
+
+    localStorage.setItem(subject + "_pin", pin);
+    alert("PIN saved successfully!");
+}
+
 </script>
 
 </body>
