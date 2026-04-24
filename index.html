@@ -39,17 +39,22 @@
       letter-spacing: 1px;
     }
 
-    .verified {
-      display: inline-block;
-      background: linear-gradient(45deg, gold, orange);
-      color: black;
-      padding: 6px 15px;
-      border-radius: 20px;
-      font-size: 13px;
-      font-weight: bold;
-      margin-bottom: 20px;
-      box-shadow: 0 0 15px gold;
-    }
+    ..verified {
+  display: inline-block;
+  padding: 8px 20px;
+  border-radius: 30px;
+  font-size: 14px;
+  font-weight: bold;
+  color: #111;
+  background: linear-gradient(145deg, #FFD700, #FFB700, #FFC300);
+  box-shadow: 0 0 12px rgba(255,215,0,0.7);
+  animation: goldGlow 2s infinite alternate;
+}
+
+@keyframes goldGlow {
+  from { box-shadow: 0 0 10px rgba(255,215,0,0.5); }
+  to { box-shadow: 0 0 25px rgba(255,215,0,1); }
+}
 
     p {
       font-size: 15px;
