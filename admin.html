@@ -159,10 +159,11 @@
 
       try {
         await addDoc(collection(db, collectionName), {
-          subject: subject,
-          pin: pin,
-          content: content,
-          createdAt: new Date()
+  subject: subject,
+  pin: pin,
+  content: content,
+  createdAt: new Date(),
+  adminPassword: "mike2026"
         });
 
         document.getElementById("status").innerText = "Answer Uploaded Successfully ✔";
