@@ -10,55 +10,37 @@
       font-family:Segoe UI, sans-serif;
       background:linear-gradient(135deg,#001f12,#004d2b);
       color:white;
-    }
-
-    .header{
       text-align:center;
-      padding:20px;
-      font-size:22px;
-      font-weight:bold;
-      background:#062f1c;
+      padding-top:60px;
     }
 
-    .container{
+    .box{
+      max-width:500px;
+      margin:20px auto;
       padding:20px;
-      max-width:800px;
-      margin:auto;
-    }
-
-    .answer-box{
       background:#0d3f28;
-      padding:20px;
-      border-radius:12px;
-      margin-bottom:20px;
-    }
-
-    .loading{
-      text-align:center;
-      margin-top:40px;
+      border-radius:10px;
     }
   </style>
 </head>
 
 <body>
 
-<div class="header">
-  VERIFIED PREMIUM ACCESS
-</div>
+<h2>VERIFIED PREMIUM ACCESS</h2>
 
-<div class="container" id="content">
-  <div class="loading">Checking PIN...</div>
+<div id="content">
+  Checking PIN...
 </div>
 
 <script type="module">
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import { getFirestore, collection, getDocs, query, where }
-from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyAzSw3J9ijVn-1xwGkKh8ZXe77i44QsVmE",
   authDomain: "mikeanswers-1ba00.firebaseapp.com",
+  databaseURL: "https://mikeanswers-1ba00-default-rtdb.europe-west1.firebasedatabase.app",
   projectId: "mikeanswers-1ba00",
   storageBucket: "mikeanswers-1ba00.firebasestorage.app",
   messagingSenderId: "999853103064",
@@ -69,36 +51,42 @@ const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
 const params = new URLSearchParams(window.location.search);
-const userPin = params.get("pin");
+const pin = params.get("pin");
 
-const contentDiv = document.getElementById("content");
+const content = document.getElementById("content");
 
-if(!userPin){
-  contentDiv.innerHTML = "No PIN provided.";
-} else {
+async function checkPin(){
 
-  const q = query(collection(db, "answers"), where("pin", "==", userPin));
-  const querySnapshot = await getDocs(q);
+  if(!pin){
+    content.innerHTML = "No PIN provided";
+    return;
+  }
 
-  if(querySnapshot.empty){
-    contentDiv.innerHTML = "Invalid PIN.";
+  const docRef = doc(db, "pins", pin);
+  const docSnap = await getDoc(docRef);
+
+  if(docSnap.exists() && docSnap.data().active === true){
+
+    content.innerHTML = `
+      <div class="box">
+        <h3>Access Granted</h3>
+        <p>Your answers will appear here.</p>
+      </div>
+    `;
+
   } else {
 
-    contentDiv.innerHTML = "";
-
-    querySnapshot.forEach((doc) => {
-      const data = doc.data();
-
-      contentDiv.innerHTML += `
-        <div class="answer-box">
-          <h3>${data.subject}</h3>
-          <p>${data.content.replace(/\n/g, "<br>")}</p>
-        </div>
-      `;
-    });
+    content.innerHTML = `
+      <div class="box">
+        Invalid PIN
+      </div>
+    `;
 
   }
+
 }
+
+checkPin();
 
 </script>
 
