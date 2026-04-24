@@ -164,7 +164,19 @@
 <div class="topbar">
   <input type="text" id="pinInput" placeholder="Enter PIN">
   <button onclick="goToPin()">VIEW ANSWER</button>
-</div>
+</div> <script>
+function goToPin(){
+  const pin = document.getElementById("pinInput").value;
+
+  if(pin === ""){
+    alert("Please enter your PIN");
+    return;
+  }
+
+  localStorage.setItem("accessPin", pin);
+  window.location.href = "answers.html";
+}
+</script>
 
 <!-- MAIN HERO -->
 <div class="hero">
