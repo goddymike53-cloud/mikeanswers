@@ -1,17 +1,17 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Enter PIN - MikeAnswers</title>
+  <title>Enter PIN</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <style>
     body{
       margin:0;
       font-family:Segoe UI, sans-serif;
-      background: linear-gradient(135deg,#001f12,#004d2b);
+      background:linear-gradient(135deg,#001f12,#004d2b);
       color:white;
       text-align:center;
-      padding:80px 20px;
+      padding-top:100px;
     }
 
     input{
@@ -22,18 +22,18 @@
       border:none;
       font-size:18px;
       text-align:center;
-      margin-bottom:20px;
     }
 
     button{
       width:85%;
       max-width:350px;
       padding:14px;
+      margin-top:15px;
       border:none;
       border-radius:8px;
-      background:#ffc107;
-      font-weight:bold;
+      background:#00e676;
       font-size:18px;
+      font-weight:bold;
       cursor:pointer;
     }
   </style>
@@ -41,13 +41,11 @@
 
 <body>
 
-<h1>Enter PIN to View Answer</h1>
+<h2>Enter PIN</h2>
 
 <input type="text" id="pinInput" placeholder="Enter PIN">
-
 <br>
-
-<button onclick="goToAnswers()">Unlock Answer</button>
+<button onclick="goToAnswers()">Unlock</button>
 
 <script>
 function goToAnswers(){
@@ -58,9 +56,9 @@ function goToAnswers(){
     return;
   }
 
-  // Send PIN to answers page
   window.location.href = "answers.html?pin=" + pin;
 }
 </script>
 
 </body>
+</html>
