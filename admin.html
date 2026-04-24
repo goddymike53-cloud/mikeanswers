@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -36,7 +35,8 @@
     }
 
     textarea {
-      min-height: 80px;
+      min-height: 100px;
+      resize: none;
     }
 
     button {
@@ -61,6 +61,14 @@
     #status, #loginStatus {
       margin-top: 10px;
       font-weight: bold;
+    }
+
+    .success {
+      color: #00ff9d;
+    }
+
+    .error {
+      color: #ff6b6b;
     }
   </style>
 </head>
@@ -91,7 +99,7 @@
     <input type="text" id="pin" placeholder="Set Access PIN">
     <textarea id="content" placeholder="Paste Answer Here..."></textarea>
 
-    <button class="uploadBtn" onclick="uploadAnswer()">Upload Answer</button>
+    <button id="uploadBtn" class="uploadBtn" onclick="uploadAnswer()">Upload Answer</button>
     <button class="logoutBtn" onclick="logout()">Logout</button>
 
     <div id="status"></div>
@@ -102,11 +110,21 @@
 <script type="module">
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
-import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut }
-from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+import { 
+  getFirestore, 
+  collection, 
+  addDoc, 
+  serverTimestamp 
+} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
-/* 🔥 YOUR REAL FIREBASE CONFIG */
+import { 
+  getAuth, 
+  signInWithEmailAndPassword, 
+  onAuthStateChanged, 
+  signOut 
+} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+
+/* 🔥 YOUR FIREBASE CONFIG */
 const firebaseConfig = {
   apiKey: "AIzaSyAzSw3J9ijVn-1xwGkKh8ZXe77i44QsVmE",
   authDomain: "mikeanswers-1ba00.firebaseapp.com",
@@ -122,13 +140,23 @@ const auth = getAuth(app);
 
 /* LOGIN */
 window.login = async function() {
-  const email = document.getElementById("adminEmail").value;
-  const password = document.getElementById("adminPassword").value;
+
+  const email = document.getElementById("adminEmail").value.trim();
+  const password = document.getElementById("adminPassword").value.trim();
+  const loginStatus = document.getElementById("loginStatus");
+
+  if (!email || !password) {
+    loginStatus.className = "error";
+    loginStatus.innerText = "Please enter email and password.";
+    return;
+  }
 
   try {
     await signInWithEmailAndPassword(auth, email, password);
+    loginStatus.innerText = "";
   } catch (error) {
-    document.getElementById("loginStatus").innerText = error.message;
+    loginStatus.className = "error";
+    loginStatus.innerText = error.message;
   }
 };
 
@@ -151,37 +179,48 @@ window.logout = function() {
 /* UPLOAD ANSWER */
 window.uploadAnswer = async function() {
 
+  const uploadBtn = document.getElementById("uploadBtn");
+  const status = document.getElementById("status");
+
   const collectionName = document.getElementById("collectionName").value;
-  const subject = document.getElementById("subject").value;
-  const pin = document.getElementById("pin").value;
-  const content = document.getElementById("content").value;
+  const subject = document.getElementById("subject").value.trim();
+  const pin = document.getElementById("pin").value.trim();
+  const content = document.getElementById("content").value.trim();
 
   if (!subject || !pin || !content) {
-    document.getElementById("status").innerText = "Please fill all fields.";
+    status.className = "error";
+    status.innerText = "Please fill all fields.";
     return;
   }
+
+  uploadBtn.disabled = true;
+  uploadBtn.innerText = "Uploading...";
 
   try {
     await addDoc(collection(db, collectionName), {
       subject: subject,
       pin: pin,
       content: content,
-      createdAt: new Date()
+      createdAt: serverTimestamp()
     });
 
-    document.getElementById("status").innerText = "Answer Uploaded Successfully ✔";
+    status.className = "success";
+    status.innerText = "Answer Uploaded Successfully ✔";
 
     document.getElementById("subject").value = "";
     document.getElementById("pin").value = "";
     document.getElementById("content").value = "";
 
   } catch (error) {
-    document.getElementById("status").innerText = error.message;
+    status.className = "error";
+    status.innerText = error.message;
   }
 
+  uploadBtn.disabled = false;
+  uploadBtn.innerText = "Upload Answer";
 };
 
 </script>
 
 </body>
-</html>
+</html>>
