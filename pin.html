@@ -5,132 +5,100 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <style>
-    body {
-      margin: 0;
-      font-family: 'Segoe UI', sans-serif;
-      background: linear-gradient(135deg, #003d1f, #006633);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
+    body{
+      margin:0;
+      font-family:Segoe UI, sans-serif;
+      background: linear-gradient(135deg,#001f12,#004d2b);
+      color:white;
+      text-align:center;
     }
 
-    .container {
-      background: rgba(255, 255, 255, 0.08);
-      backdrop-filter: blur(12px);
-      border-radius: 20px;
-      padding: 40px;
-      width: 90%;
-      max-width: 400px;
-      text-align: center;
-      box-shadow: 0 0 25px rgba(0, 255, 128, 0.4);
-      animation: fadeIn 1s ease-in-out;
+    .section{
+      padding:80px 20px;
     }
 
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: translateY(0); }
+    h1{
+      font-size:30px;
+      margin-bottom:15px;
     }
 
-    h2 {
-      color: white;
-      margin-bottom: 10px;
+    .badge{
+      display:inline-block;
+      padding:8px 20px;
+      border-radius:25px;
+      background: linear-gradient(145deg,#FFD700,#FFB700,#FFC300);
+      color:#111;
+      font-weight:bold;
+      box-shadow:0 0 15px rgba(255,215,0,0.8);
+      margin-bottom:30px;
     }
 
-    .badge {
-      display: inline-block;
-      background: gold;
-      color: black;
-      padding: 5px 12px;
-      border-radius: 50px;
-      font-size: 12px;
-      font-weight: bold;
-      margin-bottom: 20px;
-      box-shadow: 0 0 10px gold;
+    input{
+      width:85%;
+      max-width:350px;
+      padding:14px;
+      border-radius:8px;
+      border:none;
+      font-size:18px;
+      text-align:center;
+      margin-bottom:20px;
     }
 
-    input {
-      width: 100%;
-      padding: 12px;
-      border-radius: 10px;
-      border: none;
-      margin-bottom: 15px;
-      font-size: 16px;
-      text-align: center;
+    button{
+      width:85%;
+      max-width:350px;
+      padding:14px;
+      border:none;
+      border-radius:8px;
+      background:#ffc107;
+      font-weight:bold;
+      font-size:18px;
+      cursor:pointer;
     }
 
-    button {
-      width: 100%;
-      padding: 12px;
-      border: none;
-      border-radius: 10px;
-      font-size: 16px;
-      font-weight: bold;
-      background: linear-gradient(45deg, #ffb300, #ffcc00);
-      cursor: pointer;
-      transition: 0.3s;
-      box-shadow: 0 0 15px rgba(255, 204, 0, 0.6);
+    button:hover{
+      opacity:0.9;
     }
 
-    button:hover {
-      transform: scale(1.05);
-    }
-
-    #result {
-      margin-top: 20px;
-      color: white;
-      font-weight: bold;
+    .note{
+      margin-top:30px;
+      font-size:16px;
+      opacity:0.8;
     }
   </style>
 </head>
 
 <body>
 
-  <div class="container">
-    <h2>Enter PIN to View Answer</h2>
-    <div class="badge">✔ VERIFIED PREMIUM ACCESS</div>
+<div class="section">
+  <h1>Enter PIN to View Answer</h1>
 
-    <input type="text" id="userPin" placeholder="Enter Access PIN">
-    <button onclick="checkPin()">Unlock Answer</button>
+  <div class="badge">✔ VERIFIED PREMIUM ACCESS</div>
 
-    <h3 id="result"></h3>
+  <input type="text" id="pinInput" placeholder="Enter PIN">
+
+  <br>
+
+  <button onclick="goToAnswers()">Unlock Answer</button>
+
+  <div class="note">
+    Answer coming<br>
+    Stay tuned for more...
   </div>
+</div>
 
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-    import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+<script>
+  function goToAnswers(){
+    const pin = document.getElementById("pinInput").value;
 
-    const firebaseConfig = {
-      apiKey: "AIzaSyAzSw3J9ijVn-1xwGkKh8ZXe77i44QsVmE",
-      authDomain: "mikeanswers-1ba00.firebaseapp.com",
-      projectId: "mikeanswers-1ba00",
-      storageBucket: "mikeanswers-1ba00.firebasestorage.app",
-      messagingSenderId: "999853103064",
-      appId: "1:999853103064:web:b74a41daf8205a52d244ad"
-    };
-
-    const app = initializeApp(firebaseConfig);
-    const db = getFirestore(app);
-
-    window.checkPin = async function () {
-      const enteredPin = document.getElementById("userPin").value;
-      const querySnapshot = await getDocs(collection(db, "waec2026"));
-
-      let found = false;
-
-      querySnapshot.forEach((doc) => {
-        const data = doc.data();
-        if (data.pin === enteredPin) {
-          document.getElementById("result").innerText = data.content;
-          found = true;
-        }
-      });
-
-      if (!found) {
-        document.getElementById("result").innerText = "Invalid PIN ❌";
-      }
+    if(pin === ""){
+      alert("Enter PIN first");
+      return;
     }
-  </script>
+
+    window.location.href = "answers.html?pin=" + pin;
+  }
+</script>
 
 </body>
 </html>
