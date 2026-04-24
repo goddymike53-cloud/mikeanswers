@@ -23,18 +23,36 @@
 
     .answers-container{
       padding:20px;
-      max-width:1000px;
+      max-width:800px;
       margin:auto;
     }
 
     .answer-box{
       background:#0d3f28;
-      padding:20px;
+      padding:25px;
       border-radius:12px;
-      margin-bottom:20px;
+      margin-bottom:25px;
       box-shadow:0 0 15px rgba(0,0,0,0.5);
+    }
+
+    .subject-title{
+      font-size:20px;
+      font-weight:bold;
+      margin-bottom:15px;
+      color:#00e676;
+    }
+
+    .answer-list{
+      display:flex;
+      flex-direction:column;
+      gap:10px;
       font-size:18px;
-      line-height:1.6;
+    }
+
+    .answer-item{
+      background:rgba(255,255,255,0.05);
+      padding:10px 15px;
+      border-radius:8px;
     }
 
     .loading{
@@ -42,6 +60,12 @@
       font-size:18px;
       margin-top:40px;
       opacity:0.8;
+    }
+
+    a{
+      color:#00e676;
+      text-decoration:none;
+      font-weight:bold;
     }
   </style>
 </head>
@@ -57,46 +81,51 @@
 </div>
 
 <script>
-  // Get PIN from URL
   const params = new URLSearchParams(window.location.search);
   const pin = params.get("pin");
 
   const content = document.getElementById("content");
 
-  // 🔒 Admin created PIN
-  const adminPin = "8080";   // change this anytime
+  const adminPin = "8080"; // Change anytime
 
   if(pin === adminPin){
 
-    // Load answers straight
     content.innerHTML = `
+
       <div class="answer-box">
-        <strong>English:</strong><br>
-        1. A<br>
-        2. C<br>
-        3. B<br>
+        <div class="subject-title">English</div>
+        <div class="answer-list">
+          <div class="answer-item">1. A</div>
+          <div class="answer-item">2. C</div>
+          <div class="answer-item">3. B</div>
+        </div>
       </div>
 
       <div class="answer-box">
-        <strong>Mathematics:</strong><br>
-        1. D<br>
-        2. B<br>
-        3. A<br>
+        <div class="subject-title">Mathematics</div>
+        <div class="answer-list">
+          <div class="answer-item">1. D</div>
+          <div class="answer-item">2. B</div>
+          <div class="answer-item">3. A</div>
+        </div>
       </div>
 
       <div class="answer-box">
-        <strong>Biology:</strong><br>
-        1. C<br>
-        2. A<br>
-        3. D<br>
+        <div class="subject-title">Biology</div>
+        <div class="answer-list">
+          <div class="answer-item">1. C</div>
+          <div class="answer-item">2. A</div>
+          <div class="answer-item">3. D</div>
+        </div>
       </div>
+
     `;
 
   } else {
     content.innerHTML = `
       <div class="loading">
         ❌ Invalid PIN <br><br>
-        <a href="index.html" style="color:#00e676;">Go Back</a>
+        <a href="index.html">Go Back</a>
       </div>
     `;
   }
