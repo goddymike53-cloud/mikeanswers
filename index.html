@@ -51,7 +51,6 @@
       letter-spacing:1px;
     }
 
-    /* ===== GOLD VERIFIED BADGE ===== */
     .verified{
       display:inline-block;
       padding:8px 22px;
@@ -76,7 +75,6 @@
       margin-bottom:30px;
     }
 
-    /* ===== BUTTONS ===== */
     .btn{
       display:block;
       width:80%;
@@ -95,13 +93,15 @@
       box-shadow:0 0 20px rgba(0,0,0,0.5);
     }
 
-    .home{background:#ff3d00;}
     .pin{background:#00c853;}
     .admin{background:#ffc107; color:black;}
-    .telegram{background:#0088cc;}
     .whatsapp{background:#25D366;}
 
-    /* VIP BOX */
+    .btn-telegram{
+      background: linear-gradient(45deg,#0088cc,#00aced);
+      box-shadow:0 0 15px rgba(0,136,204,0.7);
+    }
+
     .vip{
       margin:40px auto;
       width:85%;
@@ -125,37 +125,12 @@
     }
 
     footer{
-  text-align:center;
-  padding:20px;
-  font-size:13px;
-  opacity:0.7;
-}
-
-/* TELEGRAM PREMIUM BUTTON */
-.btn-telegram {
-  display: block;
-  margin: 15px auto;
-  padding: 14px;
-  width: 85%;
-  border-radius: 12px;
-  border: none;
-  font-size: 15px;
-  font-weight: bold;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  text-decoration: none;
-  color: white;
-  background: linear-gradient(45deg, #0088cc, #00aced);
-  box-shadow: 0 0 15px rgba(0,136,204,0.7);
-}
-
-.btn-telegram:hover {
-  transform: scale(1.05);
-  box-shadow: 0 0 25px rgba(0,136,204,1);
-}
-
-</style>
-  
+      text-align:center;
+      padding:20px;
+      font-size:13px;
+      opacity:0.7;
+    }
+  </style>
 </head>
 
 <body>
@@ -164,19 +139,7 @@
 <div class="topbar">
   <input type="text" id="pinInput" placeholder="Enter PIN">
   <button onclick="goToPin()">VIEW ANSWER</button>
-</div> <script>
-function goToPin(){
-  const pin = document.getElementById("pinInput").value;
-
-  if(pin === ""){
-    alert("Please enter your PIN");
-    return;
-  }
-
-  localStorage.setItem("accessPin", pin);
-  window.location.href = "answers.html";
-}
-</script>
+</div>
 
 <!-- MAIN HERO -->
 <div class="hero">
@@ -190,10 +153,14 @@ function goToPin(){
 
   <a href="pin.html" class="btn pin">Enter PIN Page</a>
   <a href="admin.html" class="btn admin">Admin Login</a>
-  <a <a href="tg://join?invite=PZCB6fpd08VjMWQ0" class="btn btn-telegram">
-  Join Our Telegram Channel
-</a>
-  <a href="https://wa.me/2349161508767" target="_blank" class="btn whatsapp">Chat on WhatsApp</a>
+
+  <a href="tg://join?invite=PZCB6fpd08VjMWQ0" class="btn btn-telegram">
+    Join Our Telegram Channel
+  </a>
+
+  <a href="https://wa.me/2349161508767" target="_blank" class="btn whatsapp">
+    Chat on WhatsApp
+  </a>
 
   <div class="vip">
     <h3>Want Early VIP Answers Before Exam?</h3>
@@ -207,16 +174,19 @@ function goToPin(){
   © 2026 MikeAnswers | Secure & Verified Portal
 </footer>
 
+<!-- ONLY ONE SCRIPT (KEEP THIS ONE) -->
 <script>
-  function goToPin(){
-    var pin = document.getElementById("pinInput").value;
-    if(pin === ""){
-      alert("Please enter your PIN");
-      return;
-    }
-    window.location.href = "answers.html?pin=" + pin;
+function goToPin(){
+  var pin = document.getElementById("pinInput").value;
+
+  if(pin === ""){
+    alert("Please enter your PIN");
+    return;
   }
+
+  window.location.href = "answers.html?pin=" + pin;
+}
 </script>
 
 </body>
-</html>
+</html>>
