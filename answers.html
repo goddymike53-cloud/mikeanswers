@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Answers Page</title>
+  <title>Answers</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <style>
@@ -18,10 +18,9 @@
       font-size:22px;
       font-weight:bold;
       background:#062f1c;
-      box-shadow:0 3px 10px rgba(0,0,0,0.4);
     }
 
-    .answers-container{
+    .container{
       padding:20px;
       max-width:800px;
       margin:auto;
@@ -29,43 +28,14 @@
 
     .answer-box{
       background:#0d3f28;
-      padding:25px;
+      padding:20px;
       border-radius:12px;
-      margin-bottom:25px;
-      box-shadow:0 0 15px rgba(0,0,0,0.5);
-    }
-
-    .subject-title{
-      font-size:20px;
-      font-weight:bold;
-      margin-bottom:15px;
-      color:#00e676;
-    }
-
-    .answer-list{
-      display:flex;
-      flex-direction:column;
-      gap:10px;
-      font-size:18px;
-    }
-
-    .answer-item{
-      background:rgba(255,255,255,0.05);
-      padding:10px 15px;
-      border-radius:8px;
+      margin-bottom:20px;
     }
 
     .loading{
       text-align:center;
-      font-size:18px;
       margin-top:40px;
-      opacity:0.8;
-    }
-
-    a{
-      color:#00e676;
-      text-decoration:none;
-      font-weight:bold;
     }
   </style>
 </head>
@@ -73,62 +43,63 @@
 <body>
 
 <div class="header">
-  ✅ VERIFIED PREMIUM ACCESS
+  VERIFIED PREMIUM ACCESS
 </div>
 
-<div class="answers-container" id="content">
+<div class="container" id="content">
   <div class="loading">Checking PIN...</div>
 </div>
 
-<script>
-  const params = new URLSearchParams(window.location.search);
-  const pin = params.get("pin");
+<script type="module">
 
-  const content = document.getElementById("content");
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getFirestore, collection, getDocs, query, where }
+from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
-  const adminPin = "8080"; // Change anytime
+const firebaseConfig = {
+  apiKey: "AIzaSyAzSw3J9ijVn-1xwGkKh8ZXe77i44QsVmE",
+  authDomain: "mikeanswers-1ba00.firebaseapp.com",
+  projectId: "mikeanswers-1ba00",
+  storageBucket: "mikeanswers-1ba00.firebasestorage.app",
+  messagingSenderId: "999853103064",
+  appId: "1:999853103064:web:b74a41daf8205a52d244ad"
+};
 
-  if(pin === adminPin){
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
 
-    content.innerHTML = `
+const params = new URLSearchParams(window.location.search);
+const userPin = params.get("pin");
 
-      <div class="answer-box">
-        <div class="subject-title">English</div>
-        <div class="answer-list">
-          <div class="answer-item">1. A</div>
-          <div class="answer-item">2. C</div>
-          <div class="answer-item">3. B</div>
-        </div>
-      </div>
+const contentDiv = document.getElementById("content");
 
-      <div class="answer-box">
-        <div class="subject-title">Mathematics</div>
-        <div class="answer-list">
-          <div class="answer-item">1. D</div>
-          <div class="answer-item">2. B</div>
-          <div class="answer-item">3. A</div>
-        </div>
-      </div>
+if(!userPin){
+  contentDiv.innerHTML = "No PIN provided.";
+} else {
 
-      <div class="answer-box">
-        <div class="subject-title">Biology</div>
-        <div class="answer-list">
-          <div class="answer-item">1. C</div>
-          <div class="answer-item">2. A</div>
-          <div class="answer-item">3. D</div>
-        </div>
-      </div>
+  const q = query(collection(db, "answers"), where("pin", "==", userPin));
+  const querySnapshot = await getDocs(q);
 
-    `;
-
+  if(querySnapshot.empty){
+    contentDiv.innerHTML = "Invalid PIN.";
   } else {
-    content.innerHTML = `
-      <div class="loading">
-        ❌ Invalid PIN <br><br>
-        <a href="index.html">Go Back</a>
-      </div>
-    `;
+
+    contentDiv.innerHTML = "";
+
+    querySnapshot.forEach((doc) => {
+      const data = doc.data();
+
+      contentDiv.innerHTML += `
+        <div class="answer-box">
+          <h3>${data.subject}</h3>
+          <p>${data.content.replace(/\n/g, "<br>")}</p>
+        </div>
+      `;
+    });
+
   }
+}
+
 </script>
 
 </body>
