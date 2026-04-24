@@ -1,150 +1,188 @@
+
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Admin Dashboard</title>
+  <title>Admin Dashboard</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<style>
-body{
-margin:0;
-font-family:Arial;
-background:linear-gradient(135deg,#0f2027,#203a43,#2c5364);
-display:flex;
-justify-content:center;
-align-items:center;
-height:100vh;
-color:white;
-}
-.card{
-background:rgba(255,255,255,0.08);
-backdrop-filter:blur(15px);
-padding:30px;
-width:350px;
-border-radius:15px;
-box-shadow:0 0 25px rgba(0,0,0,0.4);
-}
-input,select,textarea{
-width:100%;
-padding:10px;
-margin:8px 0;
-border:none;
-border-radius:8px;
-}
-button{
-width:100%;
-padding:12px;
-border:none;
-border-radius:8px;
-margin-top:10px;
-cursor:pointer;
-font-weight:bold;
-}
-.primary{background:#00c6ff;color:white;}
-.danger{background:red;color:white;}
-.badge{
-background:gold;
-color:black;
-padding:6px 12px;
-border-radius:20px;
-display:inline-block;
-font-weight:bold;
-margin-bottom:15px;
-}
-.hidden{display:none;}
-</style>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
+      color: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .card {
+      background: rgba(255,255,255,0.1);
+      padding: 25px;
+      border-radius: 15px;
+      width: 90%;
+      max-width: 400px;
+      backdrop-filter: blur(10px);
+    }
+
+    input, select, textarea, button {
+      width: 100%;
+      margin-top: 10px;
+      padding: 12px;
+      border-radius: 8px;
+      border: none;
+      font-size: 16px;
+    }
+
+    textarea {
+      min-height: 80px;
+    }
+
+    button {
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    .uploadBtn {
+      background: #00c6ff;
+      color: white;
+    }
+
+    .logoutBtn {
+      background: red;
+      color: white;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    #status, #loginStatus {
+      margin-top: 10px;
+      font-weight: bold;
+    }
+  </style>
 </head>
 <body>
 
-<div class="card" id="loginSection">
-<h2>Admin Login</h2>
-<div class="badge">✔ VERIFIED ADMIN</div>
-<input type="password" id="adminPassword" placeholder="Enter Admin Password">
-<button class="primary" onclick="login()">Login</button>
-<p id="loginStatus"></p>
-</div>
+<div class="card">
 
-<div class="card hidden" id="dashboardSection">
-<h2>Admin Dashboard</h2>
-<div class="badge">✔ VERIFIED ADMIN</div>
+  <!-- LOGIN SECTION -->
+  <div id="loginSection">
+    <h2>Admin Login</h2>
+    <input type="email" id="adminEmail" placeholder="Enter Admin Email">
+    <input type="password" id="adminPassword" placeholder="Enter Password">
+    <button onclick="login()">Login</button>
+    <div id="loginStatus"></div>
+  </div>
 
-<select id="collectionName">
-<option value="waec2026">WAEC 2026</option>
-<option value="neco2026">NECO 2026</option>
-<option value="jamb2026">JAMB 2026</option>
-</select>
+  <!-- DASHBOARD SECTION -->
+  <div id="dashboardSection" class="hidden">
+    <h2>Admin Dashboard</h2>
 
-<input type="text" id="subject" placeholder="Enter Subject">
-<input type="text" id="pin" placeholder="Set Access PIN">
-<textarea id="content" placeholder="Paste Answer Here..."></textarea>
+    <select id="collectionName">
+      <option value="waec2026">WAEC 2026</option>
+      <option value="neco2026">NECO 2026</option>
+      <option value="jamb2026">JAMB 2026</option>
+    </select>
 
-<button class="primary" onclick="uploadAnswer()">Upload Answer</button>
-<button class="danger" onclick="logout()">Logout</button>
+    <input type="text" id="subject" placeholder="Enter Subject">
+    <input type="text" id="pin" placeholder="Set Access PIN">
+    <textarea id="content" placeholder="Paste Answer Here..."></textarea>
 
-<p id="status"></p>
+    <button class="uploadBtn" onclick="uploadAnswer()">Upload Answer</button>
+    <button class="logoutBtn" onclick="logout()">Logout</button>
+
+    <div id="status"></div>
+  </div>
+
 </div>
 
 <script type="module">
+
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut }
+from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 
+/* 🔥 YOUR REAL FIREBASE CONFIG */
 const firebaseConfig = {
-apiKey: "AIzaSyAzSnJjwIN-ixmGKn8ZXv7l4405vNfs",
-authDomain: "mikeanswers-1ba00.firebaseapp.com",
-projectId: "mikeanswers-1ba00",
-storageBucket: "mikeanswers-1ba00.appspot.com",
-messagingSenderId: "999853103064",
-appId: "1:999853103064:web:b74a41daf8205a52d244ad"
+  apiKey: "AIzaSyAzSw3J9ijVn-1xwGkKh8ZXe77i44QsVmE",
+  authDomain: "mikeanswers-1ba00.firebaseapp.com",
+  projectId: "mikeanswers-1ba00",
+  storageBucket: "mikeanswers-1ba00.firebasestorage.app",
+  messagingSenderId: "999853103064",
+  appId: "1:999853103064:web:b74a41daf8205a52d244ad"
 };
 
+/* Initialize */
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
+const auth = getAuth(app);
 
-const ADMIN_PASSWORD = "mike2026";
+/* LOGIN */
+window.login = async function() {
+  const email = document.getElementById("adminEmail").value;
+  const password = document.getElementById("adminPassword").value;
 
-window.login = function(){
-const entered = document.getElementById("adminPassword").value;
-if(entered === ADMIN_PASSWORD){
-document.getElementById("loginSection").classList.add("hidden");
-document.getElementById("dashboardSection").classList.remove("hidden");
-}else{
-document.getElementById("loginStatus").innerText = "Wrong Password ❌";
-}
-}
+  try {
+    await signInWithEmailAndPassword(auth, email, password);
+  } catch (error) {
+    document.getElementById("loginStatus").innerText = error.message;
+  }
+};
 
-window.logout = function(){
-document.getElementById("dashboardSection").classList.add("hidden");
-document.getElementById("loginSection").classList.remove("hidden");
-document.getElementById("adminPassword").value="";
-}
-
-window.uploadAnswer = async function(){
-const collectionName=document.getElementById("collectionName").value;
-const subject=document.getElementById("subject").value;
-const pin=document.getElementById("pin").value;
-const content=document.getElementById("content").value;
-
-if(!subject||!pin||!content){
-document.getElementById("status").innerText="Fill all fields ❌";
-return;
-}
-
-try{
-await addDoc(collection(db,collectionName),{
-subject:subject,
-pin:pin,
-content:content,
-createdAt:new Date()
+/* AUTO LOGIN CHECK */
+onAuthStateChanged(auth, (user) => {
+  if (user) {
+    document.getElementById("loginSection").classList.add("hidden");
+    document.getElementById("dashboardSection").classList.remove("hidden");
+  } else {
+    document.getElementById("loginSection").classList.remove("hidden");
+    document.getElementById("dashboardSection").classList.add("hidden");
+  }
 });
-document.getElementById("status").innerText="Answer Uploaded Successfully ✅";
-document.getElementById("subject").value="";
-document.getElementById("pin").value="";
-document.getElementById("content").value="";
-}catch(error){
-document.getElementById("status").innerText="Error: "+error.message;
-}
-}
+
+/* LOGOUT */
+window.logout = function() {
+  signOut(auth);
+};
+
+/* UPLOAD ANSWER */
+window.uploadAnswer = async function() {
+
+  const collectionName = document.getElementById("collectionName").value;
+  const subject = document.getElementById("subject").value;
+  const pin = document.getElementById("pin").value;
+  const content = document.getElementById("content").value;
+
+  if (!subject || !pin || !content) {
+    document.getElementById("status").innerText = "Please fill all fields.";
+    return;
+  }
+
+  try {
+    await addDoc(collection(db, collectionName), {
+      subject: subject,
+      pin: pin,
+      content: content,
+      createdAt: new Date()
+    });
+
+    document.getElementById("status").innerText = "Answer Uploaded Successfully ✔";
+
+    document.getElementById("subject").value = "";
+    document.getElementById("pin").value = "";
+    document.getElementById("content").value = "";
+
+  } catch (error) {
+    document.getElementById("status").innerText = error.message;
+  }
+
+};
+
 </script>
 
 </body>
-</html>
+  </html>
