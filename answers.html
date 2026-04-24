@@ -51,6 +51,56 @@ else{
     answerBox.innerHTML = "✅ Correct PIN<br><br>YOUR ANSWERS WILL SHOW HERE";
 }
 
+<script type="module">
+
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+/* YOUR FIREBASE CONFIG */
+const firebaseConfig = {
+  apiKey: "AIzaSyAzSw3J9ijVn-1xwGkKh8ZXe77i44QsVmE",
+  authDomain: "mikeanswers-1ba00.firebaseapp.com",
+  projectId: "mikeanswers-1ba00",
+  storageBucket: "mikeanswers-1ba00.firebasestorage.app",
+  messagingSenderId: "999853103064",
+  appId: "1:999853103064:web:b74a41daf8205a52d244ad"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+window.goToPin = async function() {
+
+  const enteredPin = document.getElementById("pinInput").value;
+
+  if (!enteredPin) {
+    document.getElementById("result").innerHTML = "❌ No PIN Entered";
+    return;
+  }
+
+  const collections = ["waec2026", "neco2026", "jamb2026"];
+  let found = false;
+
+  for (let name of collections) {
+    const snapshot = await getDocs(collection(db, name));
+
+    snapshot.forEach(doc => {
+      const data = doc.data();
+
+      if (data.pin === enteredPin) {
+        document.getElementById("result").innerHTML =
+          `<h3>${data.subject}</h3><p>${data.content}</p>`;
+        found = true;
+      }
+    });
+  }
+
+  if (!found) {
+    document.getElementById("result").innerHTML = "❌ Invalid PIN";
+  }
+
+};
+
 </script>
 
 </body>
