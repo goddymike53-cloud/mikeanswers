@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -67,7 +68,7 @@
 
 <div class="card">
 
-  <!-- LOGIN SECTION -->
+  <!-- LOGIN -->
   <div id="loginSection">
     <h2>Admin Login</h2>
     <input type="email" id="adminEmail" placeholder="Enter Admin Email">
@@ -76,7 +77,7 @@
     <div id="loginStatus"></div>
   </div>
 
-  <!-- DASHBOARD SECTION -->
+  <!-- DASHBOARD -->
   <div id="dashboardSection" class="hidden">
     <h2>Admin Dashboard</h2>
 
@@ -115,7 +116,6 @@ const firebaseConfig = {
   appId: "1:999853103064:web:b74a41daf8205a52d244ad"
 };
 
-/* Initialize */
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 const auth = getAuth(app);
@@ -181,34 +181,7 @@ window.uploadAnswer = async function() {
 
 };
 
-<script>
-
-function login(){
-    const email = document.getElementById("adminEmail").value;
-    const password = document.getElementById("adminPassword").value;
-
-    if(email === "admin@gmail.com" && password === "12345"){
-        document.getElementById("loginSection").style.display = "none";
-        document.getElementById("dashboardSection").classList.remove("hidden");
-    } else {
-        document.getElementById("loginStatus").innerText = "Invalid login details";
-    }
-}
-
-function savePin(){
-    const subject = document.getElementById("collectionName").value;
-    const pin = document.getElementById("newPin").value;
-
-    if(pin === ""){
-        alert("Enter a PIN");
-        return;
-    }
-
-    localStorage.setItem(subject + "_pin", pin);
-    alert("PIN saved successfully!");
-}
-
 </script>
 
 </body>
-  </html>
+</html>
