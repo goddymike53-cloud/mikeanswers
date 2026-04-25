@@ -1,45 +1,74 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>View Answer</title>
+<meta charset="UTF-8">
+<title>Enter PIN</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
 body{
     margin:0;
-    font-family:Segoe UI, sans-serif;
-    background:#f2f2f2;
+    font-family:Arial, sans-serif;
+    background: linear-gradient(135deg, #003d1f, #006633);
+    color:white;
     text-align:center;
 }
 
 .container{
-    margin-top:80px;
+    padding:60px 20px;
 }
 
-select, input{
-    padding:12px;
-    width:250px;
-    margin:10px;
+h2{
+    font-size:28px;
+    margin-bottom:30px;
+}
+
+input{
+    width:90%;
+    max-width:400px;
+    padding:15px;
+    font-size:18px;
+    border:none;
+    border-radius:10px;
+    outline:none;
+    text-align:center;
 }
 
 button{
-    padding:12px 20px;
-    background:green;
-    color:white;
+    margin-top:20px;
+    padding:14px 40px;
+    font-size:16px;
+    background:gold;
+    color:black;
     border:none;
+    border-radius:8px;
+    font-weight:bold;
     cursor:pointer;
 }
 
-.answer-box{
-    margin-top:30px;
-    padding:20px;
-    background:white;
+button:hover{
+    opacity:0.9;
+}
+
+#result{
+    margin-top:40px;
+    padding:25px;
     width:90%;
     max-width:700px;
     margin-left:auto;
     margin-right:auto;
-    box-shadow:0 0 10px rgba(0,0,0,0.1);
+    background:rgba(0,0,0,0.4);
+    border-radius:12px;
     text-align:left;
+    white-space:pre-wrap;
+    display:none;
+    font-size:16px;
+}
+
+.error{
+    margin-top:20px;
+    color:#ff4d4d;
+    font-weight:bold;
 }
 </style>
 </head>
@@ -48,80 +77,64 @@ button{
 <div class="container">
     <h2>Enter Your PIN</h2>
 
-    <select id="subject">
-        <option value="Accounting">Accounting</option>
-        <option value="Mathematics">Mathematics</option>
-        <option value="Biology">Biology</option>
-        <option value="Chemistry">Chemistry</option>
-        <option value="Physics">Physics</option>
-        <option value="Government">Government</option>
-        <option value="Economics">Economics</option>
-        <option value="Fishery">Fishery</option>
-    </select>
+    <input type="text" id="pinInput" placeholder="Enter PIN">
+
     <br>
+    <button onclick="checkPin()">VIEW ANSWER</button>
 
-    <input type="text" id="pin" placeholder="Enter PIN">
-    <br>
-
-    <button onclick="getAnswer()">Submit</button>
-
-    <div id="answer" class="answer-box"></div>
+    <div class="error" id="errorMsg"></div>
 </div>
 
-<script type="module">
+<div id="result"></div>
 
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import { getFirestore, collection, query, where, getDocs } 
-from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+<!-- Firebase -->
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
 
-/* 🔥 YOUR REAL FIREBASE CONFIG */
+<script>
+
 const firebaseConfig = {
   apiKey: "AIzaSyAzSw3J9ijVn-1xwGkKh8ZXe77i44QsVmE",
   authDomain: "mikeanswers-1ba00.firebaseapp.com",
-  projectId: "mikeanswers-1ba00",
-  storageBucket: "mikeanswers-1ba00.firebasestorage.app",
-  messagingSenderId: "999853103064",
-  appId: "1:999853103064:web:b74a41daf8205a52d244ad"
+  projectId: "mikeanswers-1ba00"
 };
 
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
+firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
 
-window.getAnswer = async function(){
+function checkPin(){
 
-    const subject = document.getElementById("subject").value;
-    const pin = document.getElementById("pin").value;
-    const answerDiv = document.getElementById("answer");
+    const pin = document.getElementById("pinInput").value.trim();
+    const errorMsg = document.getElementById("errorMsg");
+    const resultDiv = document.getElementById("result");
+
+    errorMsg.innerHTML = "";
+    resultDiv.style.display = "none";
 
     if(pin === ""){
-        alert("Enter PIN first");
+        errorMsg.innerHTML = "Enter PIN first";
         return;
     }
 
-    answerDiv.innerHTML = "Loading...";
+    db.collection("answers").where("pin","==",pin).get()
+    .then((querySnapshot)=>{
 
-    const q = query(
-        collection(db, "answers"),
-        where("subject", "==", subject),
-        where("pin", "==", pin)
-    );
+        if(querySnapshot.empty){
+            errorMsg.innerHTML = "❌ Invalid PIN";
+        }else{
+            querySnapshot.forEach((doc)=>{
+                const data = doc.data();
+                resultDiv.innerHTML = data.content;
+                resultDiv.style.display = "block";
+            });
+        }
 
-    const querySnapshot = await getDocs(q);
-
-    if(querySnapshot.empty){
-        answerDiv.innerHTML = "❌ Invalid PIN or Subject";
-        return;
-    }
-
-    querySnapshot.forEach((doc) => {
-        const data = doc.data();
-
-        answerDiv.innerHTML = `
-            <h3>${data.subject}</h3>
-            <p>${data.content}</p>
-        `;
+    })
+    .catch((error)=>{
+        errorMsg.innerHTML = "Error loading answer";
+        console.log(error);
     });
-};
+}
 
 </script>
 
