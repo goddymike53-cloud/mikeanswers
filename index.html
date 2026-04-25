@@ -1,73 +1,132 @@
-<!DOCTYPE html>
+<<!DOCTYPE html>
 <html>
 <head>
-  <title>Enter PIN</title>
-  <style>
-    body {
-      font-family: Arial;
-      text-align: center;
-      margin-top: 100px;
-    }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mikeanswers</title>
 
-    input, select, button {
-      padding: 10px;
-      margin: 10px;
-      width: 250px;
-    }
+<style>
 
-    button {
-      background: green;
-      color: white;
-      border: none;
-    }
-  </style>
+body{
+  margin:0;
+  font-family: Arial, sans-serif;
+  background: linear-gradient(to bottom, #062e1f, #00150d);
+  color:white;
+  text-align:center;
+}
+
+/* TOP BAR */
+.top-bar{
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  gap:10px;
+  padding:15px;
+  background:#0b2e1d;
+}
+
+.chat-btn{
+  background:#25D366;
+  color:white;
+  padding:10px 15px;
+  border-radius:6px;
+  text-decoration:none;
+  font-weight:bold;
+}
+
+.pin-input{
+  padding:10px;
+  width:100px;
+  border-radius:6px;
+  border:none;
+  text-align:center;
+  background:#012b18;
+  color:white;
+  font-weight:bold;
+}
+
+.view-btn{
+  background:#ffa500;
+  color:black;
+  padding:10px 15px;
+  border:none;
+  border-radius:6px;
+  font-weight:bold;
+  cursor:pointer;
+}
+
+h1{
+  margin-top:40px;
+  font-size:32px;
+}
+
+.subtitle{
+  color:#cfcfcf;
+  padding:0 20px;
+  margin-bottom:40px;
+}
+
+.button{
+  display:inline-block;
+  margin:10px;
+  padding:12px 25px;
+  border-radius:6px;
+  text-decoration:none;
+  font-weight:bold;
+}
+
+.home-btn{
+  background:#ffa500;
+  color:black;
+}
+
+.pin-btn{
+  border:2px solid #25D366;
+  color:#25D366;
+}
+
+.admin-btn{
+  border:2px solid #ffa500;
+  color:#ffa500;
+}
+
+</style>
 </head>
+
 <body>
 
-<h2>Enter Your PIN</h2>
+<!-- TOP BAR -->
+<div class="top-bar">
+  <a href="chat.html" class="chat-btn">Chat</a>
 
-<select id="subject">
-  <option value="Accounting">Accounting</option>
-  <option value="Agriculture">Agriculture</option>
-  <option value="Biology">Biology</option>
-  <option value="CRS">CRS</option>
-  <option value="Chemistry">Chemistry</option>
-  <option value="Commerce">Commerce</option>
-  <option value="Economics">Economics</option>
-  <option value="English">English</option>
-  <option value="Further maths">Further maths</option>
-  <option value="Geography">Geography</option>
-  <option value="Government">Government</option>
-  <option value="Lit in English">Lit in English</option>
-  <option value="Marketing">Marketing</option>
-  <option value="Physics">Physics</option>
-  <option value="Civic education">Civic education</option>
-  <option value="mathematics">mathematics</option>
-</select>
+  <input type="text" id="pin" class="pin-input" placeholder="PIN">
 
+  <button class="view-btn" onclick="goToAnswers()">VIEW ANSWER</button>
+</div>
+
+<h1>Mikeanswers</h1>
+
+<p class="subtitle">
+Your reliable source for correct WAEC, NECO, and JAMB answers – quick, accurate, and free.
+</p>
+
+<a href="#" class="button home-btn">Home</a>
+<a href="#" class="button pin-btn">Enter Pin</a>
 <br>
-
-<input type="text" id="pin" placeholder="Enter PIN">
-
-<br>
-
-<button onclick="goToAnswers()">Submit</button>
+<a href="admin.html" class="button admin-btn">Admin Login</a>
 
 <script>
-function goToAnswers() {
-  const subject = document.getElementById("subject").value;
+function goToAnswers(){
   const pin = document.getElementById("pin").value;
 
-  if(pin === "") {
-    alert("Enter PIN");
+  if(pin === ""){
+    alert("Please enter PIN");
     return;
   }
 
-  window.location.href = 
-    "answers.html?subject=" + encodeURIComponent(subject) +
-    "&pin=" + encodeURIComponent(pin);
+  window.location.href = "answers.html?pin=" + pin;
 }
 </script>
 
 </body>
-</html>>
+</html>
