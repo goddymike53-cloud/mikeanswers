@@ -1,130 +1,172 @@
-<<!DOCTYPE html>
+<!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Mikeanswers</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
-
 body{
-  margin:0;
-  font-family: Arial, sans-serif;
-  background: linear-gradient(to bottom, #062e1f, #00150d);
-  color:white;
-  text-align:center;
+    margin:0;
+    font-family:Segoe UI, sans-serif;
+    background:linear-gradient(135deg,#001f12,#004d2b);
+    color:white;
+    text-align:center;
 }
 
-/* TOP BAR */
-.top-bar{
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  gap:10px;
-  padding:15px;
-  background:#0b2e1d;
+/* ===== TOP PIN BANNER ===== */
+.top-pin-banner{
+    width:100%;
+    background:#063d1e;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    gap:10px;
+    padding:12px;
+    position:fixed;
+    top:0;
+    left:0;
+    z-index:9999;
+}
+
+.top-pin-banner input{
+    padding:10px;
+    width:90px;
+    border:none;
+    border-radius:6px;
+    text-align:center;
+    font-weight:bold;
 }
 
 .chat-btn{
-  background:#25D366;
-  color:white;
-  padding:10px 15px;
-  border-radius:6px;
-  text-decoration:none;
-  font-weight:bold;
-}
-
-.pin-input{
-  padding:10px;
-  width:100px;
-  border-radius:6px;
-  border:none;
-  text-align:center;
-  background:#012b18;
-  color:white;
-  font-weight:bold;
+    background:#25D366;
+    color:white;
+    padding:10px 16px;
+    border-radius:6px;
+    text-decoration:none;
+    font-weight:bold;
 }
 
 .view-btn{
-  background:#ffa500;
-  color:black;
-  padding:10px 15px;
-  border:none;
-  border-radius:6px;
-  font-weight:bold;
-  cursor:pointer;
+    background:#f4a100;
+    color:black;
+    padding:10px 16px;
+    border:none;
+    border-radius:6px;
+    font-weight:bold;
+    cursor:pointer;
 }
 
-h1{
-  margin-top:40px;
-  font-size:32px;
+/* ===== MAIN CONTENT ===== */
+.main{
+    padding-top:120px;
 }
 
-.subtitle{
-  color:#cfcfcf;
-  padding:0 20px;
-  margin-bottom:40px;
-}
-
-.button{
-  display:inline-block;
-  margin:10px;
-  padding:12px 25px;
-  border-radius:6px;
-  text-decoration:none;
-  font-weight:bold;
+button{
+    padding:14px 25px;
+    margin:10px;
+    border:none;
+    border-radius:8px;
+    font-size:16px;
+    font-weight:bold;
+    cursor:pointer;
 }
 
 .home-btn{
-  background:#ffa500;
-  color:black;
+    background:#f4a100;
 }
 
 .pin-btn{
-  border:2px solid #25D366;
-  color:#25D366;
+    background:transparent;
+    border:2px solid #00e676;
+    color:#00e676;
 }
 
 .admin-btn{
-  border:2px solid #ffa500;
-  color:#ffa500;
+    background:transparent;
+    border:2px solid #f4a100;
+    color:#f4a100;
 }
 
+.telegram-btn{
+    display:block;
+    margin:20px auto;
+    width:90%;
+    max-width:400px;
+    text-align:center;
+    background:#229ED9;
+    color:white;
+    padding:15px;
+    border-radius:12px;
+    font-weight:bold;
+    text-decoration:none;
+}
+
+.whatsapp-big{
+    display:block;
+    margin:20px auto;
+    width:90%;
+    max-width:400px;
+    text-align:center;
+    background:#25D366;
+    color:white;
+    padding:15px;
+    border-radius:12px;
+    font-weight:bold;
+    text-decoration:none;
+}
 </style>
 </head>
 
 <body>
 
-<!-- TOP BAR -->
-<div class="top-bar">
-  <a href="chat.html" class="chat-btn">Chat</a>
+<!-- ===== TOP PIN BAR ===== -->
+<div class="top-pin-banner">
+    <a href="https://wa.me/2349161508767" target="_blank" class="chat-btn">
+        Chat
+    </a>
 
-  <input type="text" id="pin" class="pin-input" placeholder="PIN">
+    <input type="text" id="topPin" placeholder="PIN">
 
-  <button class="view-btn" onclick="goToAnswers()">VIEW ANSWER</button>
+    <button onclick="redirectToPinPage()" class="view-btn">
+        VIEW ANSWER
+    </button>
 </div>
 
-<h1>Mikeanswers</h1>
+<!-- ===== MAIN SECTION ===== -->
+<div class="main">
+    <h1>Mikeanswers</h1>
 
-<p class="subtitle">
-Your reliable source for correct WAEC, NECO, and JAMB answers – quick, accurate, and free.
-</p>
+    <p>
+        Your reliable source for correct WAEC, NECO, and JAMB answers – quick, accurate, and free.
+    </p>
 
-<a href="#" class="button home-btn">Home</a>
-<a href="#" class="button pin-btn">Enter Pin</a>
-<br>
-<a href="admin.html" class="button admin-btn">Admin Login</a>
+    <button class="home-btn">Home</button>
+    <button class="pin-btn" onclick="window.location.href='pin.html'">Enter Pin</button>
+    <br>
+    <button class="admin-btn" onclick="window.location.href='admin.html'">Admin Login</button>
+
+    <a href="https://wa.me/2349161508767" target="_blank" class="whatsapp-big">
+        Join Our WhatsApp Channel
+    </a>
+
+    <!-- 🔴 CHANGE USERNAME BELOW -->
+    <a href="<a href="https://t.me/+PZCB6fpd08VjMWQ0" target="_blank" class="btn btn-telegram">
+  Join Our Telegram Channel
+  </a>" target="_blank" class="telegram-btn">
+        Join Our Telegram Channel
+    </a>
+</div>
 
 <script>
-function goToAnswers(){
-  const pin = document.getElementById("pin").value;
+function redirectToPinPage(){
+    const pin = document.getElementById("topPin").value;
 
-  if(pin === ""){
-    alert("Please enter PIN");
-    return;
-  }
+    if(pin === ""){
+        alert("Enter PIN first");
+        return;
+    }
 
-  window.location.href = "answers.html?pin=" + pin;
+    window.location.href = "pin.html?pin=" + pin;
 }
 </script>
 
