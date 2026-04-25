@@ -2,91 +2,67 @@
 <html>
 <head>
   <title>Answers</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
   <style>
-    body{
-      margin:0;
-      font-family:Segoe UI, sans-serif;
-      background:linear-gradient(135deg,#001f12,#004d2b);
-      color:white;
-      text-align:center;
-      padding-top:60px;
+    body {
+      font-family: Arial;
+      padding: 20px;
     }
 
-    .box{
-      max-width:500px;
-      margin:20px auto;
-      padding:20px;
-      background:#0d3f28;
-      border-radius:10px;
+    img {
+      max-width: 100%;
+      margin-top: 20px;
     }
   </style>
 </head>
-
 <body>
 
-<h2>VERIFIED PREMIUM ACCESS</h2>
-
-<div id="content">
-  Checking PIN...
-</div>
+<h2 id="title"></h2>
+<div id="content"></div>
+<img id="image">
 
 <script type="module">
 
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyAzSw3J9ijVn-1xwGkKh8ZXe77i44QsVmE",
   authDomain: "mikeanswers-1ba00.firebaseapp.com",
-  databaseURL: "https://mikeanswers-1ba00-default-rtdb.europe-west1.firebasedatabase.app",
-  projectId: "mikeanswers-1ba00",
-  storageBucket: "mikeanswers-1ba00.firebasestorage.app",
-  messagingSenderId: "999853103064",
-  appId: "1:999853103064:web:b74a41daf8205a52d244ad"
+  projectId: "mikeanswers-1ba00"
 };
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-const params = new URLSearchParams(window.location.search);
-const pin = params.get("pin");
+// Get subject and pin from URL
+const urlParams = new URLSearchParams(window.location.search);
+const subject = urlParams.get("subject");
+const pin = urlParams.get("pin");
 
-const content = document.getElementById("content");
+document.getElementById("title").innerText = subject;
 
-async function checkPin(){
+const docRef = doc(db, "answers", subject);
+const docSnap = await getDoc(docRef);
 
-  if(!pin){
-    content.innerHTML = "No PIN provided";
-    return;
-  }
+if (docSnap.exists()) {
 
-  const docRef = doc(db, "pins", pin);
-  const docSnap = await getDoc(docRef);
+  const data = docSnap.data();
 
-  if(docSnap.exists() && docSnap.data().active === true){
+  if (data.pin === pin) {
 
-    content.innerHTML = `
-      <div class="box">
-        <h3>Access Granted</h3>
-        <p>Your answers will appear here.</p>
-      </div>
-    `;
+    document.getElementById("content").innerHTML = data.content;
+
+    if (data.image) {
+      document.getElementById("image").src = data.image;
+    }
 
   } else {
-
-    content.innerHTML = `
-      <div class="box">
-        Invalid PIN
-      </div>
-    `;
-
+    alert("Wrong PIN");
   }
 
+} else {
+  alert("Subject not found");
 }
-
-checkPin();
 
 </script>
 
