@@ -1,63 +1,128 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Enter PIN</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>View Answer</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <style>
-    body{
-      margin:0;
-      font-family:Segoe UI, sans-serif;
-      background:linear-gradient(135deg,#001f12,#004d2b);
-      color:white;
-      text-align:center;
-      padding-top:100px;
-    }
+<style>
+body{
+    margin:0;
+    font-family:Segoe UI, sans-serif;
+    background:#f2f2f2;
+    text-align:center;
+}
 
-    input{
-      width:85%;
-      max-width:350px;
-      padding:14px;
-      border-radius:8px;
-      border:none;
-      font-size:18px;
-      text-align:center;
-    }
+.container{
+    margin-top:80px;
+}
 
-    button{
-      width:85%;
-      max-width:350px;
-      padding:14px;
-      margin-top:15px;
-      border:none;
-      border-radius:8px;
-      background:#00e676;
-      font-size:18px;
-      font-weight:bold;
-      cursor:pointer;
-    }
-  </style>
+select, input{
+    padding:12px;
+    width:250px;
+    margin:10px;
+}
+
+button{
+    padding:12px 20px;
+    background:green;
+    color:white;
+    border:none;
+    cursor:pointer;
+}
+
+.answer-box{
+    margin-top:30px;
+    padding:20px;
+    background:white;
+    width:90%;
+    max-width:700px;
+    margin-left:auto;
+    margin-right:auto;
+    box-shadow:0 0 10px rgba(0,0,0,0.1);
+    text-align:left;
+}
+</style>
 </head>
-
 <body>
 
-<h2>Enter PIN</h2>
+<div class="container">
+    <h2>Enter Your PIN</h2>
 
-<input type="text" id="pinInput" placeholder="Enter PIN">
-<br>
-<button onclick="goToAnswers()">Unlock</button>
+    <select id="subject">
+        <option value="Accounting">Accounting</option>
+        <option value="Mathematics">Mathematics</option>
+        <option value="Biology">Biology</option>
+        <option value="Chemistry">Chemistry</option>
+        <option value="Physics">Physics</option>
+        <option value="Government">Government</option>
+        <option value="Economics">Economics</option>
+        <option value="Fishery">Fishery</option>
+    </select>
+    <br>
 
-<script>
-function goToAnswers(){
-  const pin = document.getElementById("pinInput").value;
+    <input type="text" id="pin" placeholder="Enter PIN">
+    <br>
 
-  if(pin === ""){
-    alert("Enter PIN first");
-    return;
-  }
+    <button onclick="getAnswer()">Submit</button>
 
-  window.location.href = "answers.html?pin=" + pin;
-}
+    <div id="answer" class="answer-box"></div>
+</div>
+
+<script type="module">
+
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getFirestore, collection, query, where, getDocs } 
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+/* 🔥 YOUR REAL FIREBASE CONFIG */
+const firebaseConfig = {
+  apiKey: "AIzaSyAzSw3J9ijVn-1xwGkKh8ZXe77i44QsVmE",
+  authDomain: "mikeanswers-1ba00.firebaseapp.com",
+  projectId: "mikeanswers-1ba00",
+  storageBucket: "mikeanswers-1ba00.firebasestorage.app",
+  messagingSenderId: "999853103064",
+  appId: "1:999853103064:web:b74a41daf8205a52d244ad"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+window.getAnswer = async function(){
+
+    const subject = document.getElementById("subject").value;
+    const pin = document.getElementById("pin").value;
+    const answerDiv = document.getElementById("answer");
+
+    if(pin === ""){
+        alert("Enter PIN first");
+        return;
+    }
+
+    answerDiv.innerHTML = "Loading...";
+
+    const q = query(
+        collection(db, "answers"),
+        where("subject", "==", subject),
+        where("pin", "==", pin)
+    );
+
+    const querySnapshot = await getDocs(q);
+
+    if(querySnapshot.empty){
+        answerDiv.innerHTML = "❌ Invalid PIN or Subject";
+        return;
+    }
+
+    querySnapshot.forEach((doc) => {
+        const data = doc.data();
+
+        answerDiv.innerHTML = `
+            <h3>${data.subject}</h3>
+            <p>${data.content}</p>
+        `;
+    });
+};
+
 </script>
 
 </body>
