@@ -64,7 +64,7 @@ if (docSnap.exists()) {
     if (data.image && data.image.trim() !== "") {
 
       const img = document.getElementById("image");
-
+img.src = data.image;
       img.src = data.image;
       img.style.display = "block";
 
