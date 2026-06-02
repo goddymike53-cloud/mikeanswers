@@ -1,30 +1,44 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Answers</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Answers</title>
 
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      padding: 20px;
-      line-height: 1.6;
-    }
+<style>
+body{
+    font-family: Arial, sans-serif;
+    padding:20px;
+    line-height:1.6;
+    background:#fff;
+}
 
-    img {
-      max-width: 100%;
-      margin-top: 20px;
-      border-radius: 8px;
-    }
-  </style>
+#title{
+    text-align:center;
+    color:#006400;
+}
+
+#content{
+    margin-top:20px;
+}
+
+#image{
+    width:100%;
+    margin-top:20px;
+    border-radius:10px;
+    display:none;
+}
+</style>
 </head>
 
 <body>
 
 <h2 id="title"></h2>
 
-<img src="https://i.ibb.co/wrRvFsyw/IMG-20260601-131537-837.jpg" width="100%">
+<div id="content"></div>
 
-<img id="image" style="display:block; width:100%; border:2px solid red;">
+<img id="image">
+
 <script type="module">
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
@@ -39,46 +53,34 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-// Get URL parameters
 const urlParams = new URLSearchParams(window.location.search);
 const subject = urlParams.get("subject");
 const pin = urlParams.get("pin");
 
-// Show subject title
-document.getElementById("title").innerText = subject;
+document.getElementById("title").innerText = subject || "Answers";
 
-// Get document from Firestore
 const docRef = doc(db, "answers", subject);
 const docSnap = await getDoc(docRef);
 
 if (docSnap.exists()) {
 
-  const data = docSnap.data();
+    const data = docSnap.data();
 
-  if (data.pin == pin) {
+    if (data.pin == pin) {
 
-    // Display content
-    document.getElementById("content").innerHTML = data.content || "";
+        document.getElementById("content").innerHTML = data.content || "";
 
-    // Display image if available
-    if (data.image && data.image.trim() !== "") {
+        if (data.image) {
+            document.getElementById("image").src = data.image;
+            document.getElementById("image").style.display = "block";
+        }
 
-      const img = document.getElementById("image");
-img.src = data.image;
-      img.src = data.image;
-      img.style.display = "block";
-
-      img.onerror = function () {
-        console.log("Image failed to load");
-      };
+    } else {
+        alert("Wrong PIN");
     }
 
-  } else {
-    alert("Wrong PIN");
-  }
-
 } else {
-  alert("Subject not found");
+    alert("Subject not found");
 }
 
 </script>
