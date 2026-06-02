@@ -1,11 +1,8 @@
-<!DOCTYPE html>
-<html>
+<!DOCTYPE html><html>
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Mikeanswers</title>
-
-<style>
+<title>Mikeanswers</title><style>
 
 body{
     margin:0;
@@ -13,6 +10,21 @@ body{
     background:linear-gradient(to bottom, #003300, #006633);
     color:white;
     text-align:center;
+}
+
+/* LOGO */
+.logo-box{
+    padding:20px;
+}
+
+.logo-box h1{
+    font-size:45px;
+    margin:0;
+}
+
+.logo-box p{
+    color:#ddd;
+    margin-top:5px;
 }
 
 /* ===== TOP PIN BAR ===== */
@@ -56,7 +68,7 @@ body{
 
 /* ===== MAIN ===== */
 .main{
-    padding:40px 20px;
+    padding:20px;
 }
 
 .main h1{
@@ -96,6 +108,31 @@ body{
     color:orange;
 }
 
+/* STATS */
+.stats{
+    display:flex;
+    justify-content:center;
+    gap:10px;
+    flex-wrap:wrap;
+    margin:20px;
+}
+
+.stats div{
+    background:white;
+    color:black;
+    padding:10px 15px;
+    border-radius:10px;
+    font-weight:bold;
+}
+
+/* ANNOUNCEMENT */
+marquee{
+    background:orange;
+    color:black;
+    padding:10px;
+    font-weight:bold;
+}
+
 /* ===== TELEGRAM ===== */
 .telegram-btn{
     display:block;
@@ -110,14 +147,13 @@ body{
     font-weight:bold;
     text-decoration:none;
     box-shadow:0 0 15px rgba(34,158,217,0.8);
-    transition:0.3s;
 }
 
 .telegram-btn:hover{
     box-shadow:0 0 30px rgba(34,158,217,1);
 }
 
-/* ===== VIP WHATSAPP GOLD ===== */
+/* ===== VIP ===== */
 .vip-box{
     background:#1c1c6b;
     margin:20px auto;
@@ -125,10 +161,6 @@ body{
     border-radius:15px;
     width:90%;
     max-width:400px;
-}
-
-.vip-box h3{
-    margin:0 0 15px 0;
 }
 
 .vip-whatsapp-btn{
@@ -141,74 +173,58 @@ body{
     font-weight:bold;
     text-decoration:none;
     box-shadow:0 0 20px gold;
-    animation:goldGlow 1.5s infinite alternate;
-}
-
-@keyframes goldGlow{
-    from{ box-shadow:0 0 10px gold; }
-    to{ box-shadow:0 0 30px gold, 0 0 40px #ffd700; }
 }
 
 .vip-whatsapp-btn:hover{
     transform:scale(1.05);
 }
 
-</style>
-</head>
+/* FOOTER */
+.footer{
+    text-align:center;
+    padding:20px;
+    margin-top:40px;
+    background:#022b1f;
+}
 
-<body>
+.footer a{
+    color:orange;
+    text-decoration:none;
+}
 
-<!-- ===== TOP PIN BAR ===== -->
-<div class="top-bar">
-
-<a href="https://wa.me/2349161508767" target="_blank">
+</style></head><body><div class="logo-box">
+    <h1>🎓 MikeAnswers</h1>
+    <p>Fast & Reliable WAEC, NECO & JAMB Solutions</p>
+</div><div class="top-bar"><a href="https://wa.me/2349161508767" target="_blank">
 <button class="chat-btn">Chat</button>
-</a>
-
-<input type="text" id="topPin" placeholder="PIN">
-
-<button onclick="redirectPin()" class="view-btn">
+</a><input type="text" id="topPin" placeholder="PIN"><button onclick="redirectPin()" class="view-btn">
 VIEW ANSWER
-</button>
-
-</div>
-
-<!-- ===== MAIN SECTION ===== -->
-<div class="main">
-
-<h1>Mikeanswers</h1>
-
-<p>
-Your reliable source for correct WAEC, NECO, and JAMB answers – quick, accurate, and free.
-</p>
-
-<br>
-
-<button class="home-btn">Home</button>
+</button></div><marquee>
+🔥 Welcome to MikeAnswers | Fast WAEC, NECO & JAMB Updates 🔥
+</marquee><div class="main"><h1>Mikeanswers</h1><p>
+Your reliable source for correct WAEC, NECO and JAMB answers – quick, accurate and free.
+</p><button class="home-btn">Home</button>
 <button class="pin-btn" onclick="window.location.href='pin.html'">Enter Pin</button>
-<br>
-<button class="admin-btn" onclick="window.location.href='admin.html'">Admin Login</button>
 
-</div>
+<br><button class="admin-btn" onclick="window.location.href='admin.html'">Admin Login</button>
 
-<!-- ===== TELEGRAM BUTTON ===== -->
-<a href="tg://join?invite=PZCB6fpd08VjMWQ0" class="telegram-btn">
-   Join Our Telegram Channel
-</a>
-
-<!-- ===== VIP WHATSAPP GOLD ===== -->
-<div class="vip-box">
-<h3>Want early VIP answers before the exam?</h3>
-
-<a href="https://wa.me/2349161508767?text=Hello%20I%20want%20VIP%20answers"
-   target="_blank"
-   class="vip-whatsapp-btn">
+</div><div class="stats">
+    <div>✅ Correct Answers</div>
+    <div>📚 WAEC & NECO</div>
+    <div>🔒 Secure PIN Access</div>
+</div><a href="tg://join?invite=PZCB6fpd08VjMWQ0" class="telegram-btn">
+Join Our Telegram Channel
+</a><div class="vip-box"><h3>Want early VIP answers before the exam?</h3><a href="https://wa.me/2349161508767?text=Hello%20I%20want%20VIP%20answers"
+target="_blank"
+class="vip-whatsapp-btn">
 Message 2349161508767 on WhatsApp
 </a>
 
-</div>
-
-<script>
+</div><div class="footer">
+<p>© 2026 MikeAnswers</p>
+<a href="about.html">About Us</a> |
+<a href="privacy.html">Privacy Policy</a>
+</div><script>
 function redirectPin(){
     var pin = document.getElementById("topPin").value;
 
@@ -219,7 +235,5 @@ function redirectPin(){
 
     window.location.href = "pin.html?pin=" + pin;
 }
-</script>
-
-</body>
+</script></body>
 </html>
