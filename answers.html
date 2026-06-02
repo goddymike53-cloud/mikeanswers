@@ -2,23 +2,29 @@
 <html>
 <head>
   <title>Answers</title>
+
   <style>
     body {
-      font-family: Arial;
+      font-family: Arial, sans-serif;
       padding: 20px;
+      line-height: 1.6;
     }
 
     img {
       max-width: 100%;
       margin-top: 20px;
+      border-radius: 8px;
     }
   </style>
 </head>
+
 <body>
 
 <h2 id="title"></h2>
+
 <div id="content"></div>
-<img id="image">
+
+<img id="image" style="display:none;">
 
 <script type="module">
 
@@ -34,13 +40,15 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-// Get subject and pin from URL
+// Get URL parameters
 const urlParams = new URLSearchParams(window.location.search);
 const subject = urlParams.get("subject");
 const pin = urlParams.get("pin");
 
+// Show subject title
 document.getElementById("title").innerText = subject;
 
+// Get document from Firestore
 const docRef = doc(db, "answers", subject);
 const docSnap = await getDoc(docRef);
 
@@ -48,12 +56,22 @@ if (docSnap.exists()) {
 
   const data = docSnap.data();
 
-  if (data.pin === pin) {
+  if (data.pin == pin) {
 
-    document.getElementById("content").innerHTML = data.content;
+    // Display content
+    document.getElementById("content").innerHTML = data.content || "";
 
-    if (data.image) {
-      document.getElementById("image").src = data.image;
+    // Display image if available
+    if (data.image && data.image.trim() !== "") {
+
+      const img = document.getElementById("image");
+
+      img.src = data.image;
+      img.style.display = "block";
+
+      img.onerror = function () {
+        console.log("Image failed to load");
+      };
     }
 
   } else {
